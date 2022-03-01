@@ -4,6 +4,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 class FilebufNoSeek : public std::filebuf
 {
@@ -112,14 +114,16 @@ std::iostream serialStream(&serialBuf);
 serialStream << "test tty arduino" << std::endl;
 
 std::cout << "Lecture du port tty..." << std::endl;
-int retour;
-//serialStream.good() comme condition de boucle???
-while(true){
-    retour = serialStream.get();
-    if(retour != EOF)
-        std::cout << retour << std::endl;
-    //if(retour == 10)
-    //    break;
+int i=0;
+int ssize = 0;
+char retour[256];
+while(i < 5000){
+    serialStream.readsome(retour, 255);
+    ssize = serialStream.gcount();
+    retour[ssize] = '\0';
+    std::cout << retour;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    i++;
 }
 
 serialBuf.close();
