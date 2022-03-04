@@ -11,11 +11,32 @@ int main(int argc, char *argv[])
     QGraphicsScene * scene = new QGraphicsScene();
 
     // create an item to put into the scene
-    QGraphicsRectItem * player = new Player();
+    Player * player = new Player();
     player->setRect(0,0,100,100);
+    player->setX(600);
+    player->setY(400);
 
     // add the item to the scene
     scene->addItem(player);
+
+    // Create rectangle for collision
+    QGraphicsRectItem * wall_L = new QGraphicsRectItem();
+    QGraphicsRectItem * wall_R = new QGraphicsRectItem();
+    QGraphicsRectItem * wall_U = new QGraphicsRectItem();
+    QGraphicsRectItem * wall_D = new QGraphicsRectItem();
+
+    wall_L->setRect(0,0,100,800);
+    wall_R->setRect(1100,0,100,800);
+    wall_U->setRect(0,0,1200,100);
+    wall_D->setRect(0,700,1200,100);
+    wall_L->setBrush(Qt::red);
+    wall_R->setBrush(Qt::red);
+    wall_U->setBrush(Qt::red);
+    wall_D->setBrush(Qt::red);
+    scene->addItem(wall_L);
+    scene->addItem(wall_R);
+    scene->addItem(wall_U);
+    scene->addItem(wall_D);
 
     // focus the item in the scene in order to make him respond to KeyPressedEvent
     player->setFlag(QGraphicsItem::ItemIsFocusable);
