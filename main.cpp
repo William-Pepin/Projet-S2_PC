@@ -24,6 +24,12 @@ int main(int argc, char *argv[])
     // add a view to visualize the scene
     QGraphicsView * view = new QGraphicsView();
 
+    view->setFixedHeight(800);
+    view->setFixedWidth(1200);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
     // set the scene to the view
     view->setScene(scene);
 
