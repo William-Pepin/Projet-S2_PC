@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QGraphicsScene>
-#include <QGraphicsRectItem>
+#include <Player.h>
 #include <QGraphicsView>
 
 int main(int argc, char *argv[])
@@ -11,11 +11,15 @@ int main(int argc, char *argv[])
     QGraphicsScene * scene = new QGraphicsScene();
 
     // create an item to put into the scene
-    QGraphicsRectItem * player = new QGraphicsRectItem();
+    QGraphicsRectItem * player = new Player();
     player->setRect(0,0,100,100);
 
-    // add the item
+    // add the item to the scene
     scene->addItem(player);
+
+    // focus the item in the scene in order to make him respond to KeyPressedEvent
+    player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
 
     // add a view to visualize the scene
     QGraphicsView * view = new QGraphicsView();
