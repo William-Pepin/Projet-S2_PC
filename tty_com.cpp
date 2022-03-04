@@ -16,7 +16,26 @@
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
 
+
+//QT headers
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QString>
+
+
 int main() {
+  QJsonObject json_obj;
+  json_obj["bargraph"] = 5;
+
+  QJsonDocument json_doc(json_obj);
+
+  QString json_string = json_doc.toJson();
+
+  std::string msg_string = json_string.toStdString();
+
+  msg_string += '\r';
+
+
   // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
   int serial_port = open("/dev/ttyACM0", O_RDWR);
 
@@ -64,14 +83,18 @@ int main() {
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+while(true){
   // Write to serial port
-  unsigned char msg[] = { 'T', 'e', 's', 't', '\n', '\r' };
-  write(serial_port, msg, sizeof(msg));
+  //unsigned char msg[] = { 'T', 'e', 's', 't', '\n', '\r' };
+
+
+  write(serial_port, msg_string.c_str(), sizeof(msg_string.c_str())-1);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
   // Allocate memory for read buffer, set size according to your needs
-  char read_buf [256];
+  char read_buf[256];
+  std::string read_buffer;
 
   // Read bytes. The behaviour of read() (e.g. does it block?,
   // how long does it block for?) depends on the configuration
@@ -83,10 +106,16 @@ int main() {
       printf("Error reading: %s", strerror(errno));
       return 1;
   }
+  read_buffer = read_buf;
+  std::cout << read_buffer;
 
+  std::this_thread::sleep_for(std::chrono::milliseconds(50));
+}
+/*
 std::cout << "Lecture du tty..." << std::endl;
   printf("Read %i bytes. Received message: %s", num_bytes, read_buf);
 
   close(serial_port);
   return 0; // success
+  */
 };
