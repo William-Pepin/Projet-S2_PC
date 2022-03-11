@@ -92,7 +92,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the new location is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_U");
         }
         return;
     }
@@ -106,7 +106,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_D");
         }
         return;
     }
@@ -120,7 +120,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_L");
         }
         return;
     }
@@ -134,14 +134,20 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_R");
         }
         return;
     }
 
     // if none of the keys are pressed, play stand animation at currently facing direction
     if (!wPressed && !aPressed && !sPressed && !dPressed){
-        playAnimationIfItExists_("stand");
+        std::string lastPlayedAnimation = entity->sprite()->playingAnimation().name();
+        if (entity->sprite()->hasAnimation(lastPlayedAnimation)){
+            entity->sprite()->stop();
+            entity->sprite()->play(lastPlayedAnimation,1,10,0);
+            entity->sprite()->stop();
+        }
+
     }
 }
 
