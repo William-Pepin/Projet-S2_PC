@@ -154,5 +154,6 @@
         <file>graphics/tree/animTree/animTree14.png</file>
         <file>graphics/misc/axeicon.png</file>
         <file>graphics/effects/fireRain.png</file>
+        <file>graphics/characterSpritesheets/player-sprite.png</file>
     </qresource>
 </RCC>
