@@ -7,7 +7,9 @@
 #include "qge/SpriteSheet.h"
 #include "qge/AngledSprite.h"
 #include "QPointF"
+#include "qge/ECKeyboardMover4Directional.h"
 
+// SPRITE AND ENTITY
 qge::Entity* buildEntity(std::string entitySpritePath);
 qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet spriteSheet);
 
@@ -30,13 +32,17 @@ qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet sprit
 {
      qge::AngledSprite* entitySprite = new qge::AngledSprite();
 
+     std::string animationsName[] = {"walk_D", "walk_U", "walk_R", "walk_L"};
      for(int i = 0; i < spriteSheet.numYTiles(); i++) //for each angle
      {
-         entitySprite->addFrames(180+(90*i) % 360,"walk",spriteSheet,qge::Node(0,0+i),qge::Node(3,0+i));
+         entitySprite->addFrames(180+(90*i) % 360,animationsName[i],spriteSheet,qge::Node(0,0+i),qge::Node(3,0+i));
      }
 
      return entitySprite;
 }
+
+
+
 
 int main(int argc, char *argv[])
 {
@@ -61,7 +67,10 @@ int main(int argc, char *argv[])
 
      map->addEntity(player);
 
-     player->sprite()->play("walk",-1,10,0);
+
+     //player control
+     qge::ECKeyboardMover4Directional* keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
+     keyboardMoverController->setStepSize(8);
 
     return a.exec();
 }
