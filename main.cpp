@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
 
      player->setOrigin(QPointF(64,64));
      player->setPos(QPointF(300,300));
+     player->sprite()->play("walk_U",1,10,3);
 
      map->addEntity(player);
 
