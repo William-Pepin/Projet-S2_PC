@@ -92,7 +92,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the new location is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_U");
         }
         return;
     }
@@ -106,7 +106,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_D");
         }
         return;
     }
@@ -120,7 +120,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_L");
         }
         return;
     }
@@ -134,7 +134,7 @@ void ECKeyboardMover4Directional::moveStep_()
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
-            playAnimationIfItExists_("walk");
+            playAnimationIfItExists_("walk_R");
         }
         return;
     }
