@@ -1,4 +1,5 @@
 #include <QApplication>
+#include "QPointF"
 
 #include "qge/Game.h"
 #include "qge/Map.h"
@@ -6,8 +7,9 @@
 #include "qge/Entity.h"
 #include "qge/SpriteSheet.h"
 #include "qge/AngledSprite.h"
-#include "QPointF"
 #include "qge/ECKeyboardMover4Directional.h"
+#include "qge/ECCameraFollower.h"
+
 
 // SPRITE AND ENTITY
 qge::Entity* buildEntity(std::string entitySpritePath);
@@ -64,6 +66,7 @@ int main(int argc, char *argv[])
 
      player->setOrigin(QPointF(64,64));
      player->setPos(QPointF(300,300));
+     game->move(QPoint(300,300));
      player->sprite()->play("walk_U",1,10,3);
 
      map->addEntity(player);
@@ -71,6 +74,9 @@ int main(int argc, char *argv[])
 
      //player control
      qge::ECKeyboardMover4Directional* keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
+     qge::ECCameraFollower* cameraFollowerController = new qge::ECCameraFollower(player);
+     player->moveBy(10,10);
+
      keyboardMoverController->setStepSize(8);
 
     return a.exec();
