@@ -1,61 +1,67 @@
 #include <QApplication>
-#include <QGraphicsScene>
-#include <Player.h>
-#include <QGraphicsView>
+
+#include "qge/Game.h"
+#include "qge/Map.h"
+#include "qge/MapGrid.h"
+#include "qge/Entity.h"
+#include "qge/SpriteSheet.h"
+#include "qge/AngledSprite.h"
+#include "QPointF"
+
+qge::Entity* buildEntity(std::string entitySpritePath);
+qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet spriteSheet);
+
+qge::Entity* buildEntity()
+{
+    qge::Entity* entity = new qge::Entity();
+
+    //spritesheet
+    qge::SpriteSheet playerSpriteSheet(":/resources/graphics/characterSpritesheets/player-sprite.png",3,4,29,28);
+
+    // Extract the spritesheet to the sprite
+    qge::AngledSprite* entitySprite = buildEntitySprite(entity,playerSpriteSheet);
+
+    entity->setSprite(entitySprite);
+
+    return entity;
+}
+
+qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet spriteSheet)
+{
+     qge::AngledSprite* entitySprite = new qge::AngledSprite();
+
+     for(int i = 0; i < spriteSheet.numYTiles(); i++) //for each angle
+     {
+         entitySprite->addFrames(180+(90*i) % 360,"walk",spriteSheet,qge::Node(0,0+i),qge::Node(3,0+i));
+     }
+
+     return entitySprite;
+}
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // create a scene
-    QGraphicsScene * scene = new QGraphicsScene();
+    // create a map
+    qge::Map* map = new qge::Map();
 
-    // create an item to put into the scene
-    Player * player = new Player();
-    player->setRect(0,0,100,100);
-    player->setX(600);
-    player->setY(400);
+    // create a map grid
+    qge::MapGrid* mapGrid = new qge::MapGrid();
+    mapGrid->setMapAtPos(map, 0, 0);
 
-    // add the item to the scene
-    scene->addItem(player);
+    // create a game
+    qge::Game* game = new qge::Game(mapGrid, 0, 0);
+    game->launch();
 
-    // Create rectangle for collision
-    QGraphicsRectItem * wall_L = new QGraphicsRectItem();
-    QGraphicsRectItem * wall_R = new QGraphicsRectItem();
-    QGraphicsRectItem * wall_U = new QGraphicsRectItem();
-    QGraphicsRectItem * wall_D = new QGraphicsRectItem();
+    // player
+     qge::Entity* player = buildEntity();
 
-    wall_L->setRect(0,0,100,800);
-    wall_R->setRect(1100,0,100,800);
-    wall_U->setRect(0,0,1200,100);
-    wall_D->setRect(0,700,1200,100);
-    wall_L->setBrush(Qt::red);
-    wall_R->setBrush(Qt::red);
-    wall_U->setBrush(Qt::red);
-    wall_D->setBrush(Qt::red);
-    scene->addItem(wall_L);
-    scene->addItem(wall_R);
-    scene->addItem(wall_U);
-    scene->addItem(wall_D);
+     player->setOrigin(QPointF(64,64));
+     player->setPos(QPointF(300,300));
 
-    // focus the item in the scene in order to make him respond to KeyPressedEvent
-    player->setFlag(QGraphicsItem::ItemIsFocusable);
-    player->setFocus();
+     map->addEntity(player);
 
-    // add a view to visualize the scene
-    QGraphicsView * view = new QGraphicsView();
-
-    view->setFixedHeight(800);
-    view->setFixedWidth(1200);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-    // set the scene to the view
-    view->setScene(scene);
-
-    // invisible by default
-    view->show();
+     player->sprite()->play("walk",-1,10,0);
 
     return a.exec();
 }
