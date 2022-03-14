@@ -1,7 +1,12 @@
 #include <QApplication>
 #include "QPointF"
+#include "QPixmap"
+#include "QImage"
 
 #include "qge/Game.h"
+#include "qge/TerrainLayer.h"
+#include "qge/PathingMap.h"
+#include "qge/PathGrid.h"
 #include "qge/Map.h"
 #include "qge/MapGrid.h"
 #include "qge/Entity.h"
@@ -43,15 +48,39 @@ qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet sprit
      return entitySprite;
 }
 
-
-
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QPixmap* mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
+    QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+    // Create a TerrainLayer
+    qge::TerrainLayer* mansion = new qge::TerrainLayer(1,1,*mansionImage);
+
+    // Create a pathingMap
+    qge::PathingMap* pathingMap = new qge::PathingMap(100,100, 32);
+    bool isFilled = pathingMap->filled(QPointF(1,1));
+
     // create a map
-    qge::Map* map = new qge::Map();
+    qge::Map* map = new qge::Map(pathingMap);
+    map->addTerrainLayer(mansion);
+    map->pathingMap().fill(QPointF(0,0));
+
+    // Creation du pathing map
+    int cellSize = 32;
+    QImage image(walkableImage->toImage());
+    int imageWidth = image.width();
+    int imageHeight = image.height();
+    int numCellsWide_ = imageWidth/cellSize;
+    int numCellsLong_ = imageHeight/cellSize;
+
+    for (int y = 0; y < imageHeight; y+=8){
+        for (int x = 0; x < imageWidth; x+=8){
+            int alpha = qAlpha(image.pixel(x,y));
+            if (alpha >= 200)
+                map->pathingMap().fill(QPointF(x,y));
+        }
+    }
 
     // create a map grid
     qge::MapGrid* mapGrid = new qge::MapGrid();
@@ -60,6 +89,7 @@ int main(int argc, char *argv[])
     // create a game
     qge::Game* game = new qge::Game(mapGrid, 0, 0);
     game->launch();
+    map->drawPathingMap();
 
     // player
      qge::Entity* player = buildEntity();
@@ -70,7 +100,6 @@ int main(int argc, char *argv[])
      player->sprite()->play("walk_U",1,10,3);
 
      map->addEntity(player);
-
 
      //player control
      qge::ECKeyboardMover4Directional* keyboardMoverController = new qge::ECKeyboardMover4Directional(player);

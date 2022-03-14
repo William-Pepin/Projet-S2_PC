@@ -155,5 +155,7 @@
         <file>graphics/misc/axeicon.png</file>
         <file>graphics/effects/fireRain.png</file>
         <file>graphics/characterSpritesheets/player-sprite.png</file>
+        <file>graphics/terrain/tilemap-visual.png</file>
+        <file>graphics/terrain/tilemap-walkable.png</file>
     </qresource>
 </RCC>
