@@ -50,7 +50,7 @@ QPointF Grid::cellToPoint(const Node &cell) const{
 /// Returns the cell at the specified position.
 Node Grid::pointToCell(const QPointF &pos) const{
     // make sure the point is in the Grid
-    assert(int(pos.x()) < width() && int(pos.y()) << height());
+    assert(int(pos.x()) < width() && int(pos.y()) < height());
 
     int nodeX = pos.x() / cellWidth();
     int nodeY = pos.y() / cellHeight();
