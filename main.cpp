@@ -1,11 +1,5 @@
 #include <QApplication>
-#include "QPointF"
-#include "QPixmap"
-#include "QImage"
 
-#include "qge/Game.h"
-#include "qge/TerrainLayer.h"
-#include "qge/PathingMap.h"
 #include "qge/PathGrid.h"
 #include "qge/Map.h"
 #include "qge/MapGrid.h"
@@ -14,6 +8,7 @@
 #include "qge/AngledSprite.h"
 #include "qge/ECKeyboardMover4Directional.h"
 #include "qge/ECCameraFollower.h"
+#include "qge/ECBodyThruster.h"
 
 
 // SPRITE AND ENTITY
@@ -54,6 +49,7 @@ int main(int argc, char *argv[])
 
     QPixmap* mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
     QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+
     // Create a TerrainLayer
     qge::TerrainLayer* mansion = new qge::TerrainLayer(1,1,*mansionImage);
 
@@ -105,8 +101,28 @@ int main(int argc, char *argv[])
      qge::ECKeyboardMover4Directional* keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
      qge::ECCameraFollower* cameraFollowerController = new qge::ECCameraFollower(player);
      player->moveBy(10,10);
+     keyboardMoverController->setStepSize(12);
+     player->setHealth(100);
 
-     keyboardMoverController->setStepSize(8);
+     // -------------- Boss -------------- //
+     qge:: Entity* boss = new qge::Entity();
+
+     boss->setOrigin(QPointF(64,64));
+     boss->setPos(QPointF(500,750));
+     map->addEntity(boss);
+
+     // Violent
+     player->setGroup(0);
+     boss->setGroup(1);
+
+     game->diplomacyManager().setRelationship(0,1,qge::Relationship::ENEMY);
+
+     qge::ECBodyThruster* bodyThrust = new qge::ECBodyThruster(boss);
+     bodyThrust->addTargetEntity(player);
+     boss->damageEnemy(player,1);
+     bodyThrust->setShowFOV(true);
+
+
 
     return a.exec();
 }
