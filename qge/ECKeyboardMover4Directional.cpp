@@ -1,4 +1,5 @@
 #include "ECKeyboardMover4Directional.h"
+#include "QPixmap"
 
 #include "Map.h"
 #include "Game.h"
@@ -89,11 +90,33 @@ void ECKeyboardMover4Directional::moveStep_()
         double newY = entity->y() - stepSize_;
         QPointF newPt(newX,newY);
 
-        // move if the new location is free
-        if (entity->canFit(newPt)){
-            entity->setPos(newPt);
-            playAnimationIfItExists_("walk_U");
+
+            QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+        int cellSize = 32;
+        QImage image(walkableImage->toImage());
+        int imageWidth = image.width();
+        int imageHeight = image.height();
+        int numCellsWide_ = imageWidth/cellSize;
+        int numCellsLong_ = imageHeight/cellSize;
+
+
+    for (int y = 0; y < imageHeight; y+=8){
+        for (int x = 0; x < imageWidth; x+=8){
+            int alpha = qAlpha(image.pixel(x,y));
+            if (alpha >= 200)
+                entity->map()->pathingMap().fill(QPointF(x,y));
         }
+    }
+        if(!entity->map()->pathingMap().filled(newPt))
+        {
+            if (entity->canFit(newPt)){
+                entity->setPos(newPt);
+                playAnimationIfItExists_("walk_U");
+            }
+        }
+
+        // move if the new location is free
+
         return;
     }
 
@@ -102,11 +125,29 @@ void ECKeyboardMover4Directional::moveStep_()
         double newX = entity->pos().x();
         double newY = entity->pos().y() + stepSize_;
         QPointF newPt(newX,newY);
+        QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+    int cellSize = 32;
+    QImage image(walkableImage->toImage());
+    int imageWidth = image.width();
+    int imageHeight = image.height();
+    int numCellsWide_ = imageWidth/cellSize;
+    int numCellsLong_ = imageHeight/cellSize;
+
+
+for (int y = 0; y < imageHeight; y+=8){
+    for (int x = 0; x < imageWidth; x+=8){
+        int alpha = qAlpha(image.pixel(x,y));
+        if (alpha >= 200)
+            entity->map()->pathingMap().fill(QPointF(x,y));
+    }
+}
 
         // move if the newPt is free
+        if(!entity->map()->pathingMap().filled(newPt)){
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_D");
+        }
         }
         return;
     }
@@ -116,6 +157,23 @@ void ECKeyboardMover4Directional::moveStep_()
         double newX = entity->pos().x() - stepSize_;
         double newY = entity->pos().y();
         QPointF newPt(newX,newY);
+        QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+    int cellSize = 32;
+    QImage image(walkableImage->toImage());
+    int imageWidth = image.width();
+    int imageHeight = image.height();
+    int numCellsWide_ = imageWidth/cellSize;
+    int numCellsLong_ = imageHeight/cellSize;
+
+        if(!entity->map()->pathingMap().filled(newPt)){
+for (int y = 0; y < imageHeight; y+=8){
+    for (int x = 0; x < imageWidth; x+=8){
+        int alpha = qAlpha(image.pixel(x,y));
+        if (alpha >= 200)
+            entity->map()->pathingMap().fill(QPointF(x,y));
+    }
+}
+        }
 
         // move if the newPt is free
         if (entity->canFit(newPt)){
@@ -130,13 +188,31 @@ void ECKeyboardMover4Directional::moveStep_()
         double newX = entity->pos().x() + stepSize_;
         double newY = entity->pos().y();
         QPointF newPt(newX,newY);
+        QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+    int cellSize = 32;
+    QImage image(walkableImage->toImage());
+    int imageWidth = image.width();
+    int imageHeight = image.height();
+    int numCellsWide_ = imageWidth/cellSize;
+    int numCellsLong_ = imageHeight/cellSize;
 
+
+for (int y = 0; y < imageHeight; y+=8){
+    for (int x = 0; x < imageWidth; x+=8){
+        int alpha = qAlpha(image.pixel(x,y));
+        if (alpha >= 200)
+            entity->map()->pathingMap().fill(QPointF(x,y));
+    }
+}
+
+        if(!entity->map()->pathingMap().filled(newPt)){
         // move if the newPt is free
         if (entity->canFit(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_R");
         }
         return;
+    }
     }
 
     // if none of the keys are pressed, play stand animation at currently facing direction

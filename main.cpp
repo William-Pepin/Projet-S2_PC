@@ -55,12 +55,11 @@ int main(int argc, char *argv[])
 
     // Create a pathingMap
     qge::PathingMap* pathingMap = new qge::PathingMap(100,100, 32);
-    bool isFilled = pathingMap->filled(QPointF(1,1));
 
     // create a map
     qge::Map* map = new qge::Map(pathingMap);
     map->addTerrainLayer(mansion);
-    map->pathingMap().fill(QPointF(0,0));
+
 
     // Creation du pathing map
     int cellSize = 32;
@@ -95,13 +94,15 @@ int main(int argc, char *argv[])
      game->move(QPoint(300,300));
      player->sprite()->play("walk_U",1,10,3);
 
+
      map->addEntity(player);
+
 
      //player control
      qge::ECKeyboardMover4Directional* keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
      qge::ECCameraFollower* cameraFollowerController = new qge::ECCameraFollower(player);
      player->moveBy(10,10);
-     keyboardMoverController->setStepSize(12);
+     keyboardMoverController->setStepSize(30);
      player->setHealth(100);
 
      // -------------- Boss -------------- //
@@ -122,6 +123,13 @@ int main(int argc, char *argv[])
      boss->damageEnemy(player,1);
      bodyThrust->setShowFOV(true);
 
+     for (int y = 0; y < imageHeight; y+=8){
+         for (int x = 0; x < imageWidth; x+=8){
+             int alpha = qAlpha(image.pixel(x,y));
+             if (alpha >= 200)
+                 player->map()->pathingMap().fill(QPointF(x,y));
+         }
+     }
 
 
     return a.exec();
