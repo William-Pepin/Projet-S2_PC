@@ -33,8 +33,15 @@ int main() {
 
   std::string msg_string = json_string.toStdString();
 
-  msg_string += '\r';
+  char c_msg_string[100];
+  
+  strcpy(c_msg_string, msg_string.c_str());
 
+  int msg_length = strlen(c_msg_string);
+
+  std::cout << "length : " << msg_length << std::endl;
+
+  c_msg_string[msg_length] = '\r';
 
   // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
   int serial_port = open("/dev/ttyACM0", O_RDWR);
@@ -85,10 +92,10 @@ int main() {
 
 while(true){
   // Write to serial port
-  //unsigned char msg[] = { 'T', 'e', 's', 't', '\n', '\r' };
+  char msg[] = { 'T', 'e', 's', 't', '\n', '\r' };
 
-
-  write(serial_port, msg_string.c_str(), sizeof(msg_string.c_str())-1);
+  write(serial_port, msg, sizeof(msg));
+  //write(serial_port, c_msg_string, msg_length);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
@@ -99,6 +106,7 @@ while(true){
   // Read bytes. The behaviour of read() (e.g. does it block?,
   // how long does it block for?) depends on the configuration
   // settings above, specifically VMIN and VTIME
+  
   int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
 
   // n is the number of bytes read. n may be 0 if no bytes were received, and can also be -1 to signal an error.
@@ -108,8 +116,10 @@ while(true){
   }
   read_buffer = read_buf;
   std::cout << read_buffer;
+  
 
   std::this_thread::sleep_for(std::chrono::milliseconds(50));
+  return 0;
 }
 /*
 std::cout << "Lecture du tty..." << std::endl;
