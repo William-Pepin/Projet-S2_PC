@@ -165,9 +165,14 @@ void ECPathMover::stopMovingEntity_()
 
     // otherwise, play stand animation (if controlled entity has one)
     EntitySprite* entitysSprite = ent->sprite();
-    if (entitysSprite != nullptr)
-        if (entitysSprite->hasAnimation("stand"))
-            ent->sprite()->play("stand",-1,10,0);
+    if (entitysSprite != nullptr){
+        std::string lastPlayedAnimation = entitysSprite->playingAnimation().name();
+        if (entitysSprite->hasAnimation(lastPlayedAnimation)){
+            entitysSprite->stop();
+            entitysSprite->play(lastPlayedAnimation,1,10,0);
+            entitysSprite->stop();
+        }
+    }
 }
 
 /// Internal helper function that returns true if the controlled entity has reached

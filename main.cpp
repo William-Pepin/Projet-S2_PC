@@ -17,8 +17,10 @@
 #include "qge/PathGrid.h"
 #include "qge/ECChaser.h"
 
-qge::Entity *buildEntity(std::string entitySpritePath);
-qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
+qge::Entity *buildPlayer();
+qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
+qge::Entity *buildGhost();
+qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
 void buildPathMap();
 
 qge::PathingMap *PATH_MAP;
@@ -41,7 +43,7 @@ void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 }
 
 // SPRITE AND ENTITY
-qge::Entity *buildEntity()
+qge::Entity *buildPlayer()
 {
     qge::Entity *entity = new qge::Entity();
 
@@ -49,14 +51,14 @@ qge::Entity *buildEntity()
     qge::SpriteSheet playerSpriteSheet(":/resources/graphics/characterSpritesheets/player-sprite.png", 3, 4, 29, 28);
 
     // Extract the spritesheet to the sprite
-    qge::AngledSprite *entitySprite = buildEntitySprite(entity, playerSpriteSheet);
+    qge::AngledSprite *entitySprite = buildPlayerSprite(entity, playerSpriteSheet);
 
     entity->setSprite(entitySprite);
 
     return entity;
 }
 
-qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
+qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
 {
     qge::AngledSprite *entitySprite = new qge::AngledSprite();
 
@@ -69,16 +71,43 @@ qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet sprit
     return entitySprite;
 }
 
+qge::Entity *buildGhost()
+{
+    qge::Entity *entity = new qge::Entity();
+
+    // spritesheet
+    qge::SpriteSheet ghostSpriteSheet(":/resources/graphics/characterSpritesheets/ghost-sprite.png",4,2,32,32);
+
+    // Extract the spritesheet to the sprite
+    qge::AngledSprite *ghostSprite = buildGhostSprite(entity, ghostSpriteSheet);
+
+    entity->setSprite(ghostSprite);
+
+    return entity;
+}
+
+qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
+{
+    qge::AngledSprite *entitySprite = new qge::AngledSprite();
+
+    for (int i = 0; i < spriteSheet.numYTiles(); i++) // for each angle
+    {
+        entitySprite->addFrames((180 * i) +270 % 360, "walk", spriteSheet, qge::Node(0, 0 + i), qge::Node(3, 0 + i));
+    }
+
+    return entitySprite;
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     // Create a TerrainLayer
-    QPixmap *mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
+    QPixmap *mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.jpg");
     qge::TerrainLayer *mansion = new qge::TerrainLayer(1, 1, *mansionImage);
 
     // create a map
-    qge::Map *map = new qge::Map(100, 100, 32);
+    qge::Map *map = new qge::Map(100, 75, 32);
     map->addTerrainLayer(mansion);
 
     // create a map grid
@@ -93,12 +122,12 @@ int main(int argc, char *argv[])
     // create a game
     qge::Game *game = new qge::Game(mapGrid, 0, 0);
     game->launch();
-    map->drawPathingMap();
+    //map->drawPathingMap();
 
     // player
-    qge::Entity *player = buildEntity();
+    qge::Entity *player = buildPlayer();
 
-    player->setOrigin(QPointF(16, 16));
+    player->setOrigin(QPointF(20, 20));
     player->moveBy(250, 250);
     player->sprite()->play("walk_U", 1, 10, 3);
 
@@ -112,17 +141,25 @@ int main(int argc, char *argv[])
     keyboardMoverController->setStepSize(16);
 
     // -------------- Boss -------------- //
-    qge::Entity *boss = new qge::Entity();
-    map->addEntity(boss);
+    qge::Entity ** ghosts = new qge::Entity*[5];
+    qge::ECChaser ** chasers = new qge::ECChaser*[5];
+    QPointF * positions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2800,1200)};
+    for(int i = 0; i < 5; i++)
+    {
+        ghosts[i] = buildGhost();
+        map->addEntity(ghosts[i]);
 
-    boss->setOrigin(QPointF(16, 16));
-    boss->moveBy(500, 500);
+        ghosts[i]->setOrigin(QPointF(20, 20));
+        ghosts[i]->setPos(positions[i]);
+        ghosts[i]->sprite()->play("walk", 1, 10, 3);
 
-    qge::ECChaser *chaser = new qge::ECChaser(boss);
-    chaser->addChasee(player);
-    chaser->startChasing();
-    chaser->setStopDistance(10);
-    chaser->setShowFOV(true);
+        chasers[i] = new qge::ECChaser(ghosts[i]);
+        chasers[i]->addChasee(player);
+        chasers[i]->startChasing();
+        chasers[i]->setStopDistance(10);
+        chasers[i]->setShowFOV(true);
+
+    }
 
     game->launch();
     player->moveBy(10, 10);
