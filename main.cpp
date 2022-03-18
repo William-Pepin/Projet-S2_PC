@@ -17,8 +17,10 @@
 #include "qge/PathGrid.h"
 #include "qge/ECChaser.h"
 
-qge::Entity *buildEntity(std::string entitySpritePath);
-qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
+qge::Entity *buildPlayer();
+qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
+qge::Entity *buildGhost();
+qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
 void buildPathMap();
 
 qge::PathingMap *PATH_MAP;
@@ -41,7 +43,7 @@ void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 }
 
 // SPRITE AND ENTITY
-qge::Entity *buildEntity()
+qge::Entity *buildPlayer()
 {
     qge::Entity *entity = new qge::Entity();
 
@@ -49,14 +51,14 @@ qge::Entity *buildEntity()
     qge::SpriteSheet playerSpriteSheet(":/resources/graphics/characterSpritesheets/player-sprite.png", 3, 4, 29, 28);
 
     // Extract the spritesheet to the sprite
-    qge::AngledSprite *entitySprite = buildEntitySprite(entity, playerSpriteSheet);
+    qge::AngledSprite *entitySprite = buildPlayerSprite(entity, playerSpriteSheet);
 
     entity->setSprite(entitySprite);
 
     return entity;
 }
 
-qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
+qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
 {
     qge::AngledSprite *entitySprite = new qge::AngledSprite();
 
@@ -64,6 +66,33 @@ qge::AngledSprite *buildEntitySprite(qge::Entity *entity, qge::SpriteSheet sprit
     for (int i = 0; i < spriteSheet.numYTiles(); i++) // for each angle
     {
         entitySprite->addFrames(180 + (90 * i) % 360, animationsName[i], spriteSheet, qge::Node(0, 0 + i), qge::Node(3, 0 + i));
+    }
+
+    return entitySprite;
+}
+
+qge::Entity *buildGhost()
+{
+    qge::Entity *entity = new qge::Entity();
+
+    // spritesheet
+    qge::SpriteSheet ghostSpriteSheet(":/resources/graphics/characterSpritesheets/ghost-sprite.png",4,2,32,32);
+
+    // Extract the spritesheet to the sprite
+    qge::AngledSprite *ghostSprite = buildGhostSprite(entity, ghostSpriteSheet);
+
+    entity->setSprite(ghostSprite);
+
+    return entity;
+}
+
+qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet)
+{
+    qge::AngledSprite *entitySprite = new qge::AngledSprite();
+
+    for (int i = 0; i < spriteSheet.numYTiles(); i++) // for each angle
+    {
+        entitySprite->addFrames((180 * i) +270 % 360, "walk", spriteSheet, qge::Node(0, 0 + i), qge::Node(3, 0 + i));
     }
 
     return entitySprite;
@@ -96,7 +125,7 @@ int main(int argc, char *argv[])
     //map->drawPathingMap();
 
     // player
-    qge::Entity *player = buildEntity();
+    qge::Entity *player = buildPlayer();
 
     player->setOrigin(QPointF(20, 20));
     player->moveBy(250, 250);
@@ -114,20 +143,22 @@ int main(int argc, char *argv[])
     // -------------- Boss -------------- //
     qge::Entity ** ghosts = new qge::Entity*[5];
     qge::ECChaser ** chasers = new qge::ECChaser*[5];
-    QPointF * positions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2280,1200)};
+    QPointF * positions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2800,1200)};
     for(int i = 0; i < 5; i++)
     {
-        ghosts[i] = new qge::Entity();
+        ghosts[i] = buildGhost();
         map->addEntity(ghosts[i]);
 
         ghosts[i]->setOrigin(QPointF(20, 20));
         ghosts[i]->setPos(positions[i]);
+        ghosts[i]->sprite()->play("walk", 1, 10, 3);
 
         chasers[i] = new qge::ECChaser(ghosts[i]);
         chasers[i]->addChasee(player);
         chasers[i]->startChasing();
         chasers[i]->setStopDistance(10);
         chasers[i]->setShowFOV(true);
+
     }
 
     game->launch();
