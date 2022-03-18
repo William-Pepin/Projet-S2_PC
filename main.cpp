@@ -14,12 +14,30 @@
 #include "qge/AngledSprite.h"
 #include "qge/ECKeyboardMover4Directional.h"
 #include "qge/ECCameraFollower.h"
+#include "qge/PathGrid.h"
 
-
-// SPRITE AND ENTITY
 qge::Entity* buildEntity(std::string entitySpritePath);
 qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet spriteSheet);
+void buildPathMap();
 
+qge::PathingMap* PATH_MAP;
+
+void buildPathMap(qge::PathingMap* pathingMap, QPixmap* pixMap, int cellSize)
+{
+    QImage image(pixMap->toImage());
+    int imageWidth = image.width();
+    int imageHeight = image.height();
+
+    for (int y = 0; y < imageHeight; y+=8){
+        for (int x = 0; x < imageWidth; x+=8){
+            int alpha = qAlpha(image.pixel(x,y));
+            if (alpha >= 200)
+                pathingMap->fill(QPointF(x,y));
+        }
+    }
+}
+
+// SPRITE AND ENTITY
 qge::Entity* buildEntity()
 {
     qge::Entity* entity = new qge::Entity();
@@ -52,39 +70,22 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QPixmap* mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
-    QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
     // Create a TerrainLayer
+    QPixmap* mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
     qge::TerrainLayer* mansion = new qge::TerrainLayer(1,1,*mansionImage);
 
-    // Create a pathingMap
-    qge::PathingMap* pathingMap = new qge::PathingMap(100,100, 32);
-    bool isFilled = pathingMap->filled(QPointF(1,1));
-
     // create a map
-    qge::Map* map = new qge::Map(pathingMap);
+    qge::Map* map = new qge::Map(100,100,32);
     map->addTerrainLayer(mansion);
-    map->pathingMap().fill(QPointF(0,0));
-
-    // Creation du pathing map
-    int cellSize = 32;
-    QImage image(walkableImage->toImage());
-    int imageWidth = image.width();
-    int imageHeight = image.height();
-    int numCellsWide_ = imageWidth/cellSize;
-    int numCellsLong_ = imageHeight/cellSize;
-
-    for (int y = 0; y < imageHeight; y+=8){
-        for (int x = 0; x < imageWidth; x+=8){
-            int alpha = qAlpha(image.pixel(x,y));
-            if (alpha >= 200)
-                map->pathingMap().fill(QPointF(x,y));
-        }
-    }
 
     // create a map grid
     qge::MapGrid* mapGrid = new qge::MapGrid();
     mapGrid->setMapAtPos(map, 0, 0);
+
+    // Global Path_Map
+    QPixmap* walkableImage = new QPixmap(":/resources/graphics/terrain/tilemap-walkable.png");
+    PATH_MAP = new qge::PathingMap(map->pathingMap());
+    buildPathMap(PATH_MAP,walkableImage,32);
 
     // create a game
     qge::Game* game = new qge::Game(mapGrid, 0, 0);
@@ -94,9 +95,8 @@ int main(int argc, char *argv[])
     // player
      qge::Entity* player = buildEntity();
 
-     player->setOrigin(QPointF(64,64));
-     player->setPos(QPointF(300,300));
-     game->move(QPoint(300,300));
+     player->setOrigin(QPointF(16,16));
+     player->setPos(QPointF(250,250));
      player->sprite()->play("walk_U",1,10,3);
 
      map->addEntity(player);

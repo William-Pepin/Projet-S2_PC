@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Utilities.h"
 #include "EntitySprite.h"
+#include "Global.h"
 
 using namespace qge;
 
@@ -90,7 +91,7 @@ void ECKeyboardMover4Directional::moveStep_()
         QPointF newPt(newX,newY);
 
         // move if the new location is free
-        if (entity->canFit(newPt)){
+        if (entity->canFit(newPt) && !PATH_MAP->filled(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_U");
         }
@@ -104,7 +105,7 @@ void ECKeyboardMover4Directional::moveStep_()
         QPointF newPt(newX,newY);
 
         // move if the newPt is free
-        if (entity->canFit(newPt)){
+        if (entity->canFit(newPt) && !PATH_MAP->filled(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_D");
         }
@@ -118,7 +119,7 @@ void ECKeyboardMover4Directional::moveStep_()
         QPointF newPt(newX,newY);
 
         // move if the newPt is free
-        if (entity->canFit(newPt)){
+        if (entity->canFit(newPt) && !PATH_MAP->filled(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_L");
         }
@@ -132,7 +133,7 @@ void ECKeyboardMover4Directional::moveStep_()
         QPointF newPt(newX,newY);
 
         // move if the newPt is free
-        if (entity->canFit(newPt)){
+        if (entity->canFit(newPt) && !PATH_MAP->filled(newPt)){
             entity->setPos(newPt);
             playAnimationIfItExists_("walk_R");
         }
