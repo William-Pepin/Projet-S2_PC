@@ -123,7 +123,7 @@ void ECChaser::onEntityEntersFOV_(Entity *entity)
         return;
 
     // if the entering entity is not a chasee, do nothing
-    if (chasees_.find(entity) == std::end(chasees_) && Game::game->diplomacyManager().getRelationship(entityControlled()->group(),entity->group()) != Relationship::ENEMY)
+    if (chasees_.find(entity) == std::end(chasees_))
         return;
 
     // set entering entity as target entity and connect to some signals from it
