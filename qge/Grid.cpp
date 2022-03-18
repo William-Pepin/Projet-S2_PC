@@ -40,7 +40,7 @@ bool Grid::contains(const Node &cell) const
 /// More specifically, returns the position of the top left corner of the specified cell.
 QPointF Grid::cellToPoint(const Node &cell) const{
     // make sure the Node is in the Grid
-    assert(cell.x() < numXCells() && cell.y() < numYCells());
+    //assert(cell.x() < numXCells() && cell.y() < numYCells());
 
     int pointX = cell.x() * cellWidth();
     int pointY = cell.y() * cellHeight();
