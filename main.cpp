@@ -15,6 +15,7 @@
 #include "qge/ECKeyboardMover4Directional.h"
 #include "qge/ECCameraFollower.h"
 #include "qge/PathGrid.h"
+#include "qge/ECChaser.h"
 
 qge::Entity* buildEntity(std::string entitySpritePath);
 qge::AngledSprite* buildEntitySprite(qge::Entity* entity, qge::SpriteSheet spriteSheet);
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
      qge::Entity* player = buildEntity();
 
      player->setOrigin(QPointF(16,16));
-     player->setPos(QPointF(250,250));
+     player->moveBy(250,250);
      player->sprite()->play("walk_U",1,10,3);
 
      map->addEntity(player);
@@ -106,7 +107,23 @@ int main(int argc, char *argv[])
      qge::ECCameraFollower* cameraFollowerController = new qge::ECCameraFollower(player);
      player->moveBy(10,10);
 
-     keyboardMoverController->setStepSize(8);
+     keyboardMoverController->setStepSize(16);
 
+     // -------------- Boss -------------- //
+qge:: Entity* boss = new qge::Entity();
+map->addEntity(boss);
+
+boss->setOrigin(QPointF(16,16));
+boss->moveBy(500,500);
+
+qge::ECChaser* chaser = new qge::ECChaser(boss);
+chaser->addChasee(player);
+chaser->startChasing();
+chaser->setStopDistance(10);
+chaser->setShowFOV(true);
+
+
+game->launch();
+     player->moveBy(10,10);
     return a.exec();
 }
