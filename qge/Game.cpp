@@ -39,7 +39,7 @@ Game::Game(MapGrid *mapGrid, int xPosOfStartingMap, int yPosOfStartingMap):
     guiLayer_->setZValue(INFINITY);
 
     // register types that needed to be used in cross thread signal-slot stuff
-    qRegisterMetaType<PathingMap>();
+    qRegisterMetaType<PathingMap>("PathingMap");
     qRegisterMetaType<std::vector<QPointF>>();
 
     for (Map* map:mapGrid_->maps()){
