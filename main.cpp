@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // Create a TerrainLayer
-    QPixmap *mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.png");
+    QPixmap *mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.jpg");
     qge::TerrainLayer *mansion = new qge::TerrainLayer(1, 1, *mansionImage);
 
     // create a map
-    qge::Map *map = new qge::Map(100, 100, 32);
+    qge::Map *map = new qge::Map(100, 75, 32);
     map->addTerrainLayer(mansion);
 
     // create a map grid
@@ -93,12 +93,12 @@ int main(int argc, char *argv[])
     // create a game
     qge::Game *game = new qge::Game(mapGrid, 0, 0);
     game->launch();
-    map->drawPathingMap();
+    //map->drawPathingMap();
 
     // player
     qge::Entity *player = buildEntity();
 
-    player->setOrigin(QPointF(16, 16));
+    player->setOrigin(QPointF(20, 20));
     player->moveBy(250, 250);
     player->sprite()->play("walk_U", 1, 10, 3);
 
@@ -112,17 +112,23 @@ int main(int argc, char *argv[])
     keyboardMoverController->setStepSize(16);
 
     // -------------- Boss -------------- //
-    qge::Entity *boss = new qge::Entity();
-    map->addEntity(boss);
+    qge::Entity ** ghosts = new qge::Entity*[5];
+    qge::ECChaser ** chasers = new qge::ECChaser*[5];
+    QPointF * positions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2280,1200)};
+    for(int i = 0; i < 5; i++)
+    {
+        ghosts[i] = new qge::Entity();
+        map->addEntity(ghosts[i]);
 
-    boss->setOrigin(QPointF(16, 16));
-    boss->moveBy(500, 500);
+        ghosts[i]->setOrigin(QPointF(20, 20));
+        ghosts[i]->setPos(positions[i]);
 
-    qge::ECChaser *chaser = new qge::ECChaser(boss);
-    chaser->addChasee(player);
-    chaser->startChasing();
-    chaser->setStopDistance(10);
-    chaser->setShowFOV(true);
+        chasers[i] = new qge::ECChaser(ghosts[i]);
+        chasers[i]->addChasee(player);
+        chasers[i]->startChasing();
+        chasers[i]->setStopDistance(10);
+        chasers[i]->setShowFOV(true);
+    }
 
     game->launch();
     player->moveBy(10, 10);
