@@ -65,7 +65,7 @@ int main() {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
   // Write to serial port
-  unsigned char msg[] = { 'T', 'e', 's', 't', '\n', '\r' };
+  unsigned char msg[] = { 'T', 'e', 's', 't', '\n' };
   write(serial_port, msg, sizeof(msg));
 
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
