@@ -6,15 +6,15 @@ using namespace qge;
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
 HPViewer::HPViewer():
     border_(15),
-    scrollWindow_(new ScrollWindow(65,65))
+    scrollWindow_(new ScrollWindow(210,65))
 {
     // defaults
     height = 50;
     width = 80;
 
 
-    this->setGuiPos(QPointF(1150,0));
-    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/hearts/coeur_05-3.jpg"));
+    this->setGuiPos(QPointF(1040,10));
+    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/hearts/coeur_6-6.png"));
 }
 
 QGraphicsItem *HPViewer::getGraphicsItem()
