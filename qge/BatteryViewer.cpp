@@ -9,10 +9,14 @@ using namespace qge;
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
 BatteryViewer::BatteryViewer():
     border_(15),
-    scrollWindow_(new ScrollWindow())
+    scrollWindow_(new ScrollWindow(70,100))
 {
     // defaults
-    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_0-5.png"));
+    height = 50;
+    width = 80;
+
+    this->setGuiPos(QPointF(-10,610));
+    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_1-5.png"));
 }
 
 QGraphicsItem *BatteryViewer::getGraphicsItem()
@@ -42,17 +46,10 @@ double BatteryViewer::getWidth()
     return width;
 }
 
-
-
 /// Draws the Inventory based on its current states.
 void BatteryViewer::draw_()
 {
     // draw background
-    double bgWidth = getWidth();
-    double bgHeight = getHeight();
-
-    scrollWindow_->setWidth(bgWidth);
-    scrollWindow_->setHeight(bgHeight);
 
     switch (batteryState) {
         case 0 :
@@ -79,6 +76,5 @@ void BatteryViewer::draw_()
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_5-5.png"));
         break;
     }
-
- }
+}
 
