@@ -1,26 +1,23 @@
-#include "BatteryViewer.h"
-#include "Inventory.h"
-#include "ItemCell.h"
-#include "Item.h"
+#include "HPViewer.h"
 #include "ScrollWindow.h"
 
 using namespace qge;
 
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
-BatteryViewer::BatteryViewer():
+HPViewer::HPViewer():
     border_(15),
-    scrollWindow_(new ScrollWindow(70,100))
+    scrollWindow_(new ScrollWindow(65,65))
 {
     // defaults
     height = 50;
     width = 80;
 
 
-    this->setGuiPos(QPointF(-10,610));
-    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_5-5.png"));
+    this->setGuiPos(QPointF(1150,0));
+    scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/hearts/coeur_05-3.jpg"));
 }
 
-QGraphicsItem *BatteryViewer::getGraphicsItem()
+QGraphicsItem *HPViewer::getGraphicsItem()
 {
     return scrollWindow_->getGraphicsItem();
 }
@@ -29,26 +26,26 @@ QGraphicsItem *BatteryViewer::getGraphicsItem()
 /// Sets the background of the InventoryViewer to the specified QPixmap.
 /// @see InventoryViewer::setBackgroundColor(const QColor& color) for
 /// more info.
-void BatteryViewer::setBackgroundPixmap(const QPixmap &pixmap)
+void HPViewer::setBackgroundPixmap(const QPixmap &pixmap)
 {
     scrollWindow_->setBackgroundPixmap(pixmap);
 }
 
 
 /// Returns the height of the InventoryViewer.
-double BatteryViewer::getHeight()
+double HPViewer::getHeight()
 {
     return height;
 }
 
 /// Returns the width of the InventoryViewer.
-double BatteryViewer::getWidth()
+double HPViewer::getWidth()
 {
     return width;
 }
 
 /// Draws the Inventory based on its current states.
-void BatteryViewer::draw_()
+void HPViewer::draw_()
 {
     // draw background
 

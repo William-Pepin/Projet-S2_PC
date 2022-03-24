@@ -165,5 +165,6 @@
         <file>graphics/battery/battery_3-5.png</file>
         <file>graphics/battery/battery_4-5.png</file>
         <file>graphics/battery/battery_5-5.png</file>
+        <file>graphics/hearts/coeur_05-3.jpg</file>
     </qresource>
 </RCC>
