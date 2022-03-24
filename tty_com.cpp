@@ -11,6 +11,7 @@ using namespace std;
 
 /*-------------------------- Librairies externes ----------------------------*/
 #include "include/serial/SerialPort.hpp"
+#include "include/json.hpp"
 
 /*------------------------------ Constantes ---------------------------------*/
 #define BAUD 9600           // Frequence de transmission serielle
@@ -41,13 +42,31 @@ int main() {
     }
     
     // Structure de donnees JSON pour envoie et reception
-    int led_state = 1;
-    int pot_value = 0;
+    int bargraph = 5;
+
+    bool dpad_up = false;
+    bool dpad_down = false;
+    bool dpad_left = false;
+    bool dpad_right = false;
+
+    bool trig_left = false;
+    bool trig_right = false;
+
+    bool button_jstick = false;
+    double angle_jstick = 0;
+
+    bool acc_ST = false;
+    int acc_x = 0; //La valeur max ne sera pas 1024 étant donné que l'accéléromètre est alimenté par du 3.3V
+    int acc_y = 0;
+    int acc_z = 0;
+
+    double angle = 0;
+
     json j_msg_send, j_msg_rcv;
 
     // Boucle infinie pour la communication bidirectionnelle Arduino-PC
     while(1) {
-        j_msg_send["led"] = led_state;      // Création du message à envoyer
+        j_msg_send["bg"] = bargraph;      // Création du message à envoyer
 
         if(!SendToSerial(arduino, j_msg_send)) {    //Envoie au Arduino
             cerr << "Erreur lors de l'envoie du message. " << endl;
@@ -62,11 +81,25 @@ int main() {
         // Impression du message de l'Arduino, si valide
         if(raw_msg.size()>0) {
              j_msg_rcv = json::parse(raw_msg);       // Transfert du message en json
-            pot_value = j_msg_rcv["analog"];        // Transfert dans la variable pot_value
+            dpad_up = j_msg_rcv["d_u"];
+            dpad_down = j_msg_rcv["d_d"];
+            dpad_left = j_msg_rcv["d_l"];
+            dpad_right = j_msg_rcv["d_r"];
+
+            trig_left = j_msg_rcv["t_l"];
+            trig_right = j_msg_rcv["t_r"];
+
+            button_jstick = j_msg_rcv["b_j"];
+            angle_jstick = j_msg_rcv["a_j"];
+
+            acc_ST = j_msg_rcv["a_S"];
+            acc_x = j_msg_rcv["a_x"];
+            acc_y = j_msg_rcv["a_y"];
+            acc_z = j_msg_rcv["a_z"];
+
             cout << "Message de l'Arduino: " << j_msg_rcv << endl;
         }
         
-        led_state = !led_state;     //Changement de l'etat led
 
         // Bloquer le fil pour environ 1 sec
         Sleep(1000); // 1000ms
