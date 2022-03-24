@@ -1,7 +1,4 @@
 #include "BatteryViewer.h"
-#include "Inventory.h"
-#include "ItemCell.h"
-#include "Item.h"
 #include "ScrollWindow.h"
 
 using namespace qge;
