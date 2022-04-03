@@ -16,6 +16,10 @@
 #include "qge/ECCameraFollower.h"
 #include "qge/PathGrid.h"
 #include "qge/ECChaser.h"
+#include "qge/InventoryUser.h"
+#include "qge/BatteryViewer.h"
+#include "qge/HPViewer.h"
+
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -160,6 +164,10 @@ int main(int argc, char *argv[])
         chasers[i]->setShowFOV(true);
 
     }
+    qge::BatteryViewer *battery = new qge::BatteryViewer();
+    qge::HPViewer *hp = new qge::HPViewer();
+    game->addGui(battery);
+    game->addGui(hp);
 
     game->launch();
     player->moveBy(10, 10);

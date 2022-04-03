@@ -6,6 +6,8 @@ CONFIG += c++14 resources_big # we require a C++14 compatible compiler and are p
 
 # these are the sources we need
 SOURCES += \ # this is just so we can line up all our sources nicely
+    $$PWD/BatteryViewer.cpp \
+    $$PWD/HPViewer.cpp \
     $$PWD/MCRegionEmitter.cpp \
     $$PWD/Map.cpp \     # note: $$PWD macor resolves into whatever directory this .pri file is at
     $$PWD/Game.cpp \
@@ -124,6 +126,8 @@ SOURCES += \ # this is just so we can line up all our sources nicely
 
 # these are the headers we use
 HEADERS  += \ # this is just so we can line up all our headers nicely
+    $$PWD/BatteryViewer.h \
+    $$PWD/HPViewer.h \
     $$PWD/MCRegionEmitter.h \
     $$PWD/Map.h \
     $$PWD/Game.h \
