@@ -21,6 +21,8 @@
 #include "qge/HPViewer.h"
 
 
+#include "ItemBattery.h"
+
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
 qge::Entity *buildGhost();
@@ -147,14 +149,14 @@ int main(int argc, char *argv[])
     // -------------- Boss -------------- //
     qge::Entity ** ghosts = new qge::Entity*[5];
     qge::ECChaser ** chasers = new qge::ECChaser*[5];
-    QPointF * positions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2800,1200)};
+    QPointF * ghostsPositions = new QPointF[5]{QPointF(500,700), QPointF(150,1500), QPointF(1300,1500), QPointF(1600,1800), QPointF(2800,1200)};
     for(int i = 0; i < 5; i++)
     {
         ghosts[i] = buildGhost();
         map->addEntity(ghosts[i]);
 
         ghosts[i]->setOrigin(QPointF(20, 20));
-        ghosts[i]->setPos(positions[i]);
+        ghosts[i]->setPos(ghostsPositions[i]);
         ghosts[i]->sprite()->play("walk", 1, 10, 3);
 
         chasers[i] = new qge::ECChaser(ghosts[i]);
@@ -164,10 +166,23 @@ int main(int argc, char *argv[])
         chasers[i]->setShowFOV(true);
 
     }
+
+    // ------------------ UI ------------------ //
     qge::BatteryViewer *battery = new qge::BatteryViewer();
     qge::HPViewer *hp = new qge::HPViewer();
     game->addGui(battery);
     game->addGui(hp);
+
+    // -------------- Batteries -------------- //
+    ItemBattery** batteries = new ItemBattery*[10];
+    QPointF *batteryPositions = new QPointF[10]{QPointF(120, 536), QPointF(38, 1140), QPointF(636, 1464), QPointF(668, 984), QPointF(1300, 462),
+                                                 QPointF(539.0, 142.0), QPointF(1656.0, 1270.0), QPointF(2222.0, 1656.0), QPointF(2940.0, 910.0), QPointF(2972.0, 1326.0)};
+    for(int i = 0; i < 10; i++)
+    {
+        batteries[i] = new ItemBattery();
+        batteries[i]->setPos(batteryPositions[i]);
+        map->addEntity(batteries[i]);
+    }
 
     game->launch();
     player->moveBy(10, 10);
