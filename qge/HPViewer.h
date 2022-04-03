@@ -32,8 +32,8 @@ public:
     double getWidth();
 
 
-    int getBatteryState();
-    int setBatteryState();
+    int getHealthState();
+    int setHealthState();
 
 
 private:
@@ -41,7 +41,7 @@ private:
     double height;
     double width;
     double paddingBWCells_;
-    int batteryState;
+    int healthState;
 
     // cell options
     bool cellBackgroundIsColor_;

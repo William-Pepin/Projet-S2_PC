@@ -49,7 +49,7 @@ void HPViewer::draw_()
 {
     // draw background
 
-    switch (batteryState) {
+    switch (healthState) {
         case 0 :
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_0-5.png"));
         break;
