@@ -1,10 +1,12 @@
 #include "BatteryViewer.h"
 #include "ScrollWindow.h"
+#include "gestionnairebattery.h"
+#include "QtDebug"
 
 using namespace qge;
 
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
-BatteryViewer::BatteryViewer():
+BatteryViewer::BatteryViewer(GestionnaireBattery *gestionnaire):
     border_(15),
     scrollWindow_(new ScrollWindow(70,100))
 {
@@ -15,6 +17,8 @@ BatteryViewer::BatteryViewer():
 
     this->setGuiPos(QPointF(-10,610));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_5-5.png"));
+
+    connect(gestionnaire, &GestionnaireBattery::ChangerUI, this, &BatteryViewer::draw_);
 }
 
 QGraphicsItem *BatteryViewer::getGraphicsItem()
@@ -45,11 +49,12 @@ double BatteryViewer::getWidth()
 }
 
 /// Draws the Inventory based on its current states.
-void BatteryViewer::draw_()
+void BatteryViewer::draw_(int state)
 {
+
     // draw background
 
-    switch (batteryState) {
+    switch (state) {
         case 0 :
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_0-5.png"));
         break;

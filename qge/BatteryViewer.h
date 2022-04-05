@@ -2,6 +2,7 @@
 
 #include "Gui.h"
 #include "ScrollWindow.h"
+#include "gestionnairebattery.h"
 
 class QPointF;
 
@@ -16,9 +17,10 @@ class ScrollWindow;
 /// InventoryViewer emits a signal.
 class BatteryViewer : public Gui
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    BatteryViewer();
+
+    BatteryViewer(GestionnaireBattery *gestionnaire);
 
     QGraphicsItem* getGraphicsItem();
 
@@ -33,6 +35,8 @@ public:
     int getBatteryState();
     int setBatteryState();
 
+public slots :
+    void draw_(int state);
 
 private:
     double border_;
@@ -49,7 +53,7 @@ private:
     std::unique_ptr<ScrollWindow> scrollWindow_;
 
     // helper functions
-    void draw_();
+
 };
 
 }
