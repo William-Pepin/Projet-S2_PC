@@ -12,7 +12,8 @@ CONFIG += c++11
 
 SOURCES += \
     itembattery.cpp \
-    main.cpp
+    main.cpp \
+    tty_com.cpp
 
 HEADERS += \
     Global.h \
