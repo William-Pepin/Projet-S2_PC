@@ -19,10 +19,9 @@
 #include "qge/InventoryUser.h"
 #include "qge/BatteryViewer.h"
 #include "qge/HPViewer.h"
+
 #include "gestionnairebattery.h"
-
-
-#include "ItemBattery.h"
+#include "itembattery.h"
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -177,11 +176,11 @@ int main(int argc, char *argv[])
 
     for(int i = 0; i < 10; i++)
     {
-        batteries[i] = new ItemBattery(player, i);
+        batteries[i] = new ItemBattery(player);
         batteries[i]->setPos(batteryPositions[i]);
         map->addEntity(batteries[i]);
     }
-    GestionnaireBattery *gestionBattery = new GestionnaireBattery(*batteries);
+    GestionnaireBattery *gestionBattery = new GestionnaireBattery(batteries);
 
     // ------------------ UI ------------------ //
     qge::BatteryViewer *battery = new qge::BatteryViewer(gestionBattery);

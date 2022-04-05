@@ -4,13 +4,15 @@
 
 #include "itembattery.h"
 #include "QObject"
+#include "QTimer"
 
 
 class GestionnaireBattery : public  QObject
 {
     Q_OBJECT
 public:
-   GestionnaireBattery(ItemBattery batteries[]);
+   GestionnaireBattery();
+    GestionnaireBattery(ItemBattery *batteries[]);
    ~GestionnaireBattery();
 
 signals:
@@ -19,12 +21,12 @@ signals:
 
 public slots:
     void BatteryPrise();
-    void emptyBattery();
+
     void intervalResponse();
 
 
 private:
-    ItemBattery battery[10];
+    ItemBattery *battery[10];
 
     //Fait la conversion entre millisecondes et secondes
     const int milliToSec = 1000;

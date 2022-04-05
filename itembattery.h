@@ -3,13 +3,15 @@
 
 #include "qge/NoTargetItem.h"
 #include "QTimer"
+#include "qge/Sprite.h"
+#include "qge/TopDownSprite.h"
 
-class ItemBattery : public qge::Entity
+class ItemBattery : public qge::NoTargetItem
 {
     Q_OBJECT
 public:
     ItemBattery();
-    ItemBattery(Entity *player, int position);
+    ItemBattery(Entity *player);
     ~ItemBattery();
 
 public slots:

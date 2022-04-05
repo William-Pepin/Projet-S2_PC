@@ -1,11 +1,15 @@
 #include "gestionnairebattery.h"
 
+GestionnaireBattery::~GestionnaireBattery()
+{
 
-GestionnaireBattery::GestionnaireBattery(ItemBattery batteries[])
+}
+
+GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[])
 {
 
     // Le timer maximum que la batterie peut avoir
-    batteryTimerMax=100*milliToSec;
+    batteryTimerMax=20*milliToSec;
 
     // Nombre Maximum d'état (dessin) différent que la batterie peut contenir
     batteryStateMax=5;
@@ -19,7 +23,8 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery batteries[])
     intervalTimer-> start(batteryInterval);
 
     for (int i =0; i < 10; i++) {
-        connect(&batteries[i], &ItemBattery::BatteryColision, this, &GestionnaireBattery::BatteryPrise);
+        battery[i]=batteries[i];
+        connect(battery[i], &ItemBattery::BatteryColision, this, &GestionnaireBattery::BatteryPrise);
 
     }
 
@@ -35,15 +40,14 @@ void GestionnaireBattery::BatteryPrise()
     }
     else //On change image (émet signal)
     {
-       emit ChangerUI(batteryState+1);
+       batteryState += 1;
+       intervalTimer->start(batteryInterval);
+       emit ChangerUI(batteryState);
     }
     emit Flashdead(false);
 }
 
-GestionnaireBattery::~GestionnaireBattery()
-{
 
-}
 
 
 void GestionnaireBattery::intervalResponse()
