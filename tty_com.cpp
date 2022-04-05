@@ -12,6 +12,7 @@ using namespace std;
 /*-------------------------- Librairies externes ----------------------------*/
 #include "include/serial/SerialPort.hpp"
 #include "include/json.hpp"
+using json = nlohmann::json;
 
 /*------------------------------ Constantes ---------------------------------*/
 #define BAUD 9600           // Frequence de transmission serielle
@@ -42,7 +43,7 @@ int main() {
     }
     
     // Structure de donnees JSON pour envoie et reception
-    int bargraph = 5;
+    int bargraph = 7;
 
     bool dpad_up = false;
     bool dpad_down = false;
@@ -59,6 +60,8 @@ int main() {
     int acc_x = 0; //La valeur max ne sera pas 1024 étant donné que l'accéléromètre est alimenté par du 3.3V
     int acc_y = 0;
     int acc_z = 0;
+    
+    int d_u,d_d,d_l,d_r,t_l,t_r,b_j;
 
     double angle = 0;
 
@@ -66,12 +69,11 @@ int main() {
 
     // Boucle infinie pour la communication bidirectionnelle Arduino-PC
     while(1) {
+        
         j_msg_send["bg"] = bargraph;      // Création du message à envoyer
-
         if(!SendToSerial(arduino, j_msg_send)) {    //Envoie au Arduino
             cerr << "Erreur lors de l'envoie du message. " << endl;
         }
-
         // Reception message Arduino
         j_msg_rcv.clear(); // effacer le message precedent
         if(!RcvFromSerial(arduino, raw_msg)) {
@@ -81,18 +83,18 @@ int main() {
         // Impression du message de l'Arduino, si valide
         if(raw_msg.size()>0) {
              j_msg_rcv = json::parse(raw_msg);       // Transfert du message en json
-            dpad_up = j_msg_rcv["d_u"];
-            dpad_down = j_msg_rcv["d_d"];
-            dpad_left = j_msg_rcv["d_l"];
-            dpad_right = j_msg_rcv["d_r"];
+            d_u = j_msg_rcv["d_u"];
+            d_d = j_msg_rcv["d_d"];
+            d_l = j_msg_rcv["d_l"];
+            d_r = j_msg_rcv["d_r"];
 
-            trig_left = j_msg_rcv["t_l"];
-            trig_right = j_msg_rcv["t_r"];
+            t_l = j_msg_rcv["t_l"];
+            t_r = j_msg_rcv["t_r"];
 
-            button_jstick = j_msg_rcv["b_j"];
+            b_j = j_msg_rcv["b_j"];
             angle_jstick = j_msg_rcv["a_j"];
 
-            acc_ST = j_msg_rcv["a_S"];
+            //acc_ST = j_msg_rcv["a_S"];
             acc_x = j_msg_rcv["a_x"];
             acc_y = j_msg_rcv["a_y"];
             acc_z = j_msg_rcv["a_z"];
@@ -102,7 +104,7 @@ int main() {
         
 
         // Bloquer le fil pour environ 1 sec
-        Sleep(1000); // 1000ms
+        //Sleep(50); // 50ms
     }
     return 0;
 }
