@@ -15,7 +15,7 @@ using namespace std;
 using json = nlohmann::json;
 
 /*------------------------------ Constantes ---------------------------------*/
-#define BAUD 9600           // Frequence de transmission serielle
+#define BAUD 74880           // Frequence de transmission serielle
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
@@ -98,8 +98,16 @@ int main() {
             acc_x = j_msg_rcv["a_x"];
             acc_y = j_msg_rcv["a_y"];
             acc_z = j_msg_rcv["a_z"];
+            
+            dpad_up = d_u;
+            dpad_down = d_d;
+            dpad_left = d_l;
+            dpad_right = d_r;
+            trig_left = t_l;
+            trig_right = t_r;
+            button_jstick = b_j;
 
-            cout << "Message de l'Arduino: " << j_msg_rcv << endl;
+            //cout << "Message de l'Arduino: d_u d_d d_l d_r t_l t_r b_j " << dpad_up << dpad_down << dpad_left << dpad_right << trig_left << trig_right << button_jstick << endl;
         }
         
 
