@@ -2,6 +2,7 @@
 #include "QPointF"
 #include "QPixmap"
 #include "QImage"
+#include "QLine"
 
 #include "qge/Game.h"
 #include "qge/TerrainLayer.h"
@@ -11,18 +12,22 @@
 #include "qge/MapGrid.h"
 #include "qge/Entity.h"
 #include "qge/SpriteSheet.h"
+#include "qge/TopDownSprite.h"
 #include "qge/AngledSprite.h"
 #include "qge/ECKeyboardMover4Directional.h"
+#include "qge/ECKeyboardMoverPerspective.h"
 #include "qge/ECCameraFollower.h"
 #include "qge/ECItemPickerUpper.h"
+#include "qge/ECFieldOfViewEmitter.h"
 #include "qge/PathGrid.h"
 #include "qge/ECChaser.h"
 #include "qge/InventoryUser.h"
 #include "qge/BatteryViewer.h"
 #include "qge/HPViewer.h"
+#include "qge/ECRotater.h"
 
-
-#include "ItemBattery.h"
+#include "itembattery.h"
+#include "lightsource.h"
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -31,6 +36,7 @@ qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet sprite
 void buildPathMap();
 
 qge::PathingMap *PATH_MAP;
+qge::Entity* FLASH_LIGHT;
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
@@ -109,13 +115,19 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Create a TerrainLayer
+    // Create TerrainLayer
     QPixmap *mansionImage = new QPixmap(":/resources/graphics/terrain/tilemap-visual.jpg");
     qge::TerrainLayer *mansion = new qge::TerrainLayer(1, 1, *mansionImage);
+
+    // Create Fog Layer
+    QPixmap *fogImage = new QPixmap(":/resources/graphics/terrain/fog.png");
+    qge::TerrainLayer *fog = new qge::TerrainLayer(1, 1, *fogImage);
 
     // create a map
     qge::Map *map = new qge::Map(100, 75, 32);
     map->addTerrainLayer(mansion);
+    //map->addTerrainLayer(fog);
+
 
     // create a map grid
     qge::MapGrid *mapGrid = new qge::MapGrid();
@@ -139,6 +151,19 @@ int main(int argc, char *argv[])
     player->sprite()->play("walk_U", 1, 10, 3);
 
     map->addEntity(player);
+
+    // Flashlight
+    FLASH_LIGHT = new qge::Entity();
+    qge::TopDownSprite* flashLightSprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/characterSpritesheets/light.png"));
+    FLASH_LIGHT->setSprite(flashLightSprite);
+    LightSource *lightSource = new LightSource(FLASH_LIGHT);
+    qge::ECRotater* lightSourceRotater = new qge::ECRotater(FLASH_LIGHT);
+    lightSource->setShowFOV(true);
+    map->addEntity(FLASH_LIGHT);
+    FLASH_LIGHT->setOrigin(QPointF(20, 20));
+    FLASH_LIGHT->moveBy(250,250);
+
+    lightSourceRotater->rotateTowards(90); // Utiliser cette fonction pour rotate la flashlight
 
     // player control
     qge::ECKeyboardMover4Directional *keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
@@ -185,6 +210,8 @@ int main(int argc, char *argv[])
         batteries[i]->setPos(batteryPositions[i]);
         map->addEntity(batteries[i]);
     }
+
+
 
     game->launch();
     player->moveBy(10, 10);

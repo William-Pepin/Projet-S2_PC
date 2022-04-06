@@ -14,10 +14,13 @@ SOURCES += \
     itembattery.cpp \
     main.cpp \
     tty_com.cpp
+    lightsource.cpp \
+    main.cpp
 
 HEADERS += \
     Global.h \
-    itembattery.h
+    itembattery.h \
+    lightsource.h
 
 FORMS +=
 
