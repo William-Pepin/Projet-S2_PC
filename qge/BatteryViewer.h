@@ -19,7 +19,7 @@ class BatteryViewer : public Gui
 {
 Q_OBJECT
 public:
-
+    BatteryViewer();
     BatteryViewer(GestionnaireBattery *gestionnaire);
 
     QGraphicsItem* getGraphicsItem();

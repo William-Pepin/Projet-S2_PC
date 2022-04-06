@@ -1,6 +1,5 @@
 #include "itembattery.h"
-#include "qge/Sprite.h"
-#include "qge/TopDownSprite.h"
+
 
 
 ItemBattery::ItemBattery()
@@ -12,10 +11,9 @@ ItemBattery::ItemBattery()
 }
 
 
-ItemBattery::ItemBattery(Entity *player, int positionVectoriel)
+ItemBattery::ItemBattery(Entity *player)
 {
     // set sprite
-    position = positionVectoriel;
     qge::TopDownSprite* sprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/misc/battery.png"));
     setSprite(sprite);
     //setDescription("A AA Battery. Can provide energy for a flashlight.");
