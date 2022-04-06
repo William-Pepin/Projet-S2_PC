@@ -10,8 +10,8 @@
 using namespace std;
 
 /*-------------------------- Librairies externes ----------------------------*/
-#include "include/serial/SerialPort.hpp"
-#include "include/json.hpp"
+#include "serial/SerialPort.hpp"
+#include "json.hpp"
 using json = nlohmann::json;
 
 /*------------------------------ Constantes ---------------------------------*/
@@ -28,7 +28,7 @@ bool RcvFromSerial(SerialPort *arduino, string &msg);
 SerialPort * arduino; //doit etre un objet global!
 
 /*----------------------------- Fonction "Main" -----------------------------*/
-int main() {
+int tty_com() {
     string raw_msg;
 
     // Initialisation du port de communication
