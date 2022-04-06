@@ -1,4 +1,5 @@
 #include "itembattery.h"
+#include "qge/Map.h"
 
 
 
@@ -11,14 +12,17 @@ ItemBattery::ItemBattery()
 }
 
 
-ItemBattery::ItemBattery(Entity *player)
+ItemBattery::ItemBattery(Entity *player, int position)
 {
     // set sprite
     qge::TopDownSprite* sprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/misc/battery.png"));
     setSprite(sprite);
     //setDescription("A AA Battery. Can provide energy for a flashlight.");
 
-    connect(player, &Entity::collided, this, &ItemBattery::use_);
+    connect(player, &Entity::collided, this, &ItemBattery::use);
+
+    this->position = position;
+    this->setGroup(5);
 }
 
 ItemBattery::~ItemBattery(){
@@ -31,9 +35,17 @@ ItemBattery::~ItemBattery(){
 //Remove the used battery.
 
 
-void ItemBattery::use_()
+void ItemBattery::use(qge::Entity *player, qge::Entity *collided)
 {
 
-  emit BatteryColision();
+    if (collided->group() ==5) {
+        emit BatteryColision(this->position);
+        this->setGroup(1000);
+        qge::Map *map = this->map();
+        map->removeEntity(this);
+    }
+
 
 }
+
+void ItemBattery::use_(){}
