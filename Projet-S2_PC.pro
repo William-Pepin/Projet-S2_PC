@@ -12,12 +12,17 @@ CONFIG += c++11
 
 SOURCES += \
     itembattery.cpp \
-    main.cpp \
-    tty_com.cpp
+    tty_com.cpp \
+    lightsource.cpp \
+    serial/SerialPort.cpp \
+    main.cpp
 
 HEADERS += \
     Global.h \
-    itembattery.h
+    itembattery.h \
+    serial/SerialPort.hpp \
+    json.hpp \
+    lightsource.h 
 
 FORMS +=
 
