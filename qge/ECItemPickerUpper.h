@@ -4,6 +4,7 @@
 
 #include "EntityController.h"
 #include "Entity.h"
+#include "itembattery.h"
 
 namespace qge{
 

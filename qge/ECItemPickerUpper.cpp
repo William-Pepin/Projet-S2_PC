@@ -27,6 +27,4 @@ void ECItemPickerUpper::onCollide(Entity *controlledEntity, Entity *collidedWith
     Inventory* inv = controlledEntity->inventory();
     if (inv == nullptr)
         return;
-
-    inv->addItem(asItem);
 }
