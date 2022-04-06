@@ -14,6 +14,7 @@
 #include "qge/AngledSprite.h"
 #include "qge/ECKeyboardMover4Directional.h"
 #include "qge/ECCameraFollower.h"
+#include "qge/ECItemPickerUpper.h"
 #include "qge/PathGrid.h"
 #include "qge/ECChaser.h"
 #include "qge/InventoryUser.h"
@@ -142,6 +143,7 @@ int main(int argc, char *argv[])
     // player control
     qge::ECKeyboardMover4Directional *keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
     qge::ECCameraFollower *cameraFollowerController = new qge::ECCameraFollower(player);
+    qge::ECItemPickerUpper *itemPicker = new qge::ECItemPickerUpper(player);
     player->moveBy(10, 10);
 
     keyboardMoverController->setStepSize(16);
