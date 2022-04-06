@@ -11,14 +11,14 @@ class ItemBattery : public qge::NoTargetItem
     Q_OBJECT
 public:
     ItemBattery();
-    ItemBattery(Entity *player);
+    ItemBattery(Entity *player, int position);
     ~ItemBattery();
-
-public slots:
     void use_();
+public slots:
+    void use(qge::Entity *player, qge::Entity *collided);
 
 signals:
-    void BatteryColision();
+    void BatteryColision(int position);
 
 private:
     int position;

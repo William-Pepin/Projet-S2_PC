@@ -1,4 +1,5 @@
 #include "gestionnairebattery.h"
+#include "QDebug"
 
 GestionnaireBattery::~GestionnaireBattery()
 {
@@ -31,7 +32,7 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[])
     connect(intervalTimer, &QTimer::timeout, this, &GestionnaireBattery::intervalResponse);
 }
 
-void GestionnaireBattery::BatteryPrise()
+void GestionnaireBattery::BatteryPrise(int position)
 {
     ///Si bargraph déjà plein, reset seulement timers et énergie
     if (batteryState == batteryStateMax)
@@ -45,10 +46,16 @@ void GestionnaireBattery::BatteryPrise()
        emit ChangerUI(batteryState);
     }
     emit Flashdead(false);
+    qDebug() << position;
+    /*qge::Map *map = battery[position]->map();
+    map->removeEntity(battery[position]);
+    */
 }
 
 
+void GestionnaireBattery::add(){
 
+}
 
 void GestionnaireBattery::intervalResponse()
 {

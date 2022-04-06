@@ -201,9 +201,10 @@ int main(int argc, char *argv[])
                                                  QPointF(539.0, 142.0), QPointF(1656.0, 1270.0), QPointF(2222.0, 1656.0), QPointF(2940.0, 910.0), QPointF(2972.0, 1326.0)};
 
 
+
     for(int i = 0; i < 10; i++)
     {
-        batteries[i] = new ItemBattery(player);
+        batteries[i] = new ItemBattery(player, i);
         batteries[i]->setPos(batteryPositions[i]);
         map->addEntity(batteries[i]);
     }

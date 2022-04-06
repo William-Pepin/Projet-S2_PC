@@ -5,6 +5,7 @@
 #include "itembattery.h"
 #include "QObject"
 #include "QTimer"
+#include "qge/Map.h"
 
 
 class GestionnaireBattery : public  QObject
@@ -14,19 +15,20 @@ public:
    GestionnaireBattery();
     GestionnaireBattery(ItemBattery *batteries[]);
    ~GestionnaireBattery();
+    void add();
 
 signals:
    void ChangerUI(int state);
    void Flashdead(bool state);
 
 public slots:
-    void BatteryPrise();
+    void BatteryPrise(int position);
 
     void intervalResponse();
 
 
 private:
-    ItemBattery *battery[10];
+    ItemBattery **battery = new ItemBattery*[10];
 
     //Fait la conversion entre millisecondes et secondes
     const int milliToSec = 1000;
