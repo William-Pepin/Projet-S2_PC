@@ -22,7 +22,6 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[])
     //Timer avant un changement d'affichage
     intervalTimer= new QTimer();
     intervalTimer-> start(batteryInterval);
-
     for (int i =0; i < 10; i++) {
         battery[i]=batteries[i];
         connect(battery[i], &ItemBattery::BatteryColision, this, &GestionnaireBattery::BatteryPrise);
@@ -53,7 +52,8 @@ void GestionnaireBattery::BatteryPrise(int position)
 }
 
 
-void GestionnaireBattery::add(){
+void GestionnaireBattery::add()
+{
 
 }
 
