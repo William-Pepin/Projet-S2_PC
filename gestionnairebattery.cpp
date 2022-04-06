@@ -6,7 +6,7 @@ GestionnaireBattery::~GestionnaireBattery()
 
 }
 
-GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[])
+GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[10])
 {
 
     // Le timer maximum que la batterie peut avoir
@@ -22,8 +22,9 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[])
     //Timer avant un changement d'affichage
     intervalTimer= new QTimer();
     intervalTimer-> start(batteryInterval);
+
     for (int i =0; i < 10; i++) {
-        battery[i]=batteries[i];
+        battery[i]= batteries[i];
         connect(battery[i], &ItemBattery::BatteryColision, this, &GestionnaireBattery::BatteryPrise);
 
     }
@@ -47,12 +48,12 @@ void GestionnaireBattery::BatteryPrise(int position)
     emit Flashdead(false);
     qDebug() << position;
     /*qge::Map *map = battery[position]->map();
-    map->removeEntity(battery[position]);
-    */
+    map->removeEntity(battery[position]);*/
+
 }
 
 
-void GestionnaireBattery::add()
+void GestionnaireBattery::add(ItemBattery *batteries)
 {
 
 }
@@ -64,6 +65,7 @@ void GestionnaireBattery::intervalResponse()
     else
     {
         batteryState -= 1;
+
         intervalTimer->stop();
         emit Flashdead(true);
     }

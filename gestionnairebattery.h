@@ -12,10 +12,9 @@ class GestionnaireBattery : public  QObject
 {
     Q_OBJECT
 public:
-   GestionnaireBattery();
-    GestionnaireBattery(ItemBattery *batteries[]);
+   GestionnaireBattery(ItemBattery *batteries[10]);
    ~GestionnaireBattery();
-    void add();
+    void add(ItemBattery *batteries);
 
 signals:
    void ChangerUI(int state);
@@ -29,7 +28,7 @@ public slots:
 
 private:
     ItemBattery *battery[10];
-
+    int pos;
     //Fait la conversion entre millisecondes et secondes
     const int milliToSec = 1000;
 
