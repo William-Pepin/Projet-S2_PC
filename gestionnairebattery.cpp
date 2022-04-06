@@ -47,8 +47,8 @@ void GestionnaireBattery::BatteryPrise(int position)
     }
     emit Flashdead(false);
     qDebug() << position;
-    /*qge::Map *map = battery[position]->map();
-    map->removeEntity(battery[position]);*/
+    //qge::Map *map = battery[position]->map();
+    //map->removeEntity(battery[position]);
 
 }
 

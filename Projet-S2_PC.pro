@@ -22,7 +22,7 @@ HEADERS += \
     Global.h \
     serial/SerialPort.hpp \
     json.hpp \
-    lightsource.h 
+    lightsource.h \
     gestionnairebattery.h \
     itembattery.h
 
