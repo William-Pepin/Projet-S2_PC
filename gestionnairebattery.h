@@ -28,7 +28,7 @@ public slots:
 
 
 private:
-    ItemBattery **battery = new ItemBattery*[10];
+    ItemBattery *battery;
 
     //Fait la conversion entre millisecondes et secondes
     const int milliToSec = 1000;
