@@ -156,7 +156,7 @@ signals:
     void moved(Entity* sender, QPointF fromPos, QPointF toPos);
 
     /// Emitted whenever the Entity collides with another Entity.
-    void collided(Entity* sender, Entity* collidedWith);
+    void collided(Entity* sender, Entity* collidedWith);  
 
     /// Emitted whenever the Entity enters a Map.
     /// If the Entity was in another map prior to entering this new map,

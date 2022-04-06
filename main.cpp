@@ -25,9 +25,9 @@
 #include "qge/BatteryViewer.h"
 #include "qge/HPViewer.h"
 #include "qge/ECRotater.h"
-
-#include "itembattery.h"
 #include "lightsource.h"
+#include "gestionnairebattery.h"
+#include "itembattery.h"
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -194,22 +194,28 @@ int main(int argc, char *argv[])
 
     }
 
-    // ------------------ UI ------------------ //
-    qge::BatteryViewer *battery = new qge::BatteryViewer();
-    qge::HPViewer *hp = new qge::HPViewer();
-    game->addGui(battery);
-    game->addGui(hp);
 
     // -------------- Batteries -------------- //
     ItemBattery** batteries = new ItemBattery*[10];
     QPointF *batteryPositions = new QPointF[10]{QPointF(120, 536), QPointF(38, 1140), QPointF(636, 1464), QPointF(668, 984), QPointF(1300, 462),
                                                  QPointF(539.0, 142.0), QPointF(1656.0, 1270.0), QPointF(2222.0, 1656.0), QPointF(2940.0, 910.0), QPointF(2972.0, 1326.0)};
+
+
+
     for(int i = 0; i < 10; i++)
     {
-        batteries[i] = new ItemBattery();
+        batteries[i] = new ItemBattery(player, i);
         batteries[i]->setPos(batteryPositions[i]);
         map->addEntity(batteries[i]);
     }
+    GestionnaireBattery *gestionBattery = new GestionnaireBattery(batteries);
+
+    // ------------------ UI ------------------ //
+    qge::BatteryViewer *battery = new qge::BatteryViewer(gestionBattery);
+    qge::HPViewer *hp = new qge::HPViewer();
+    game->addGui(battery);
+    game->addGui(hp);
+
 
 
 

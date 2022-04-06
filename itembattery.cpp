@@ -1,16 +1,52 @@
 #include "itembattery.h"
-#include "qge/Sprite.h"
-#include "qge/TopDownSprite.h"
+#include "qge/Map.h"
+
+
 
 ItemBattery::ItemBattery()
 {
     // set sprite
     qge::TopDownSprite* sprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/misc/battery.png"));
     setSprite(sprite);
-    setDescription("A AA Battery. Can provide energy for a flashlight.");
+   //setDescription("A AA Battery. Can provide energy for a flashlight.");
 }
 
-void ItemBattery::use_()
+
+ItemBattery::ItemBattery(Entity *player, int position)
 {
-    // does nothing
+    // set sprite
+    qge::TopDownSprite* sprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/misc/battery.png"));
+    setSprite(sprite);
+    //setDescription("A AA Battery. Can provide energy for a flashlight.");
+
+    connect(player, &Entity::collided, this, &ItemBattery::use);
+
+    this->position = position;
+    this->setGroup(5);
 }
+
+ItemBattery::~ItemBattery(){
+
+}
+
+
+// Add time to the battery's timer.
+//Update the UI of the battery.
+//Remove the used battery.
+
+
+void ItemBattery::use(qge::Entity *player, qge::Entity *collided)
+{
+
+    if (collided->group() ==5) {
+        emit BatteryColision(this->position);
+        //this->setGroup(1000);
+
+        /*qge::Map *map = this->map();
+        map->removeEntity(this);*/
+    }
+
+
+}
+
+void ItemBattery::use_(){}
