@@ -5,6 +5,8 @@
 #include "Inventory.h"
 #include "ScrollWindow.h"
 #include "Entity.h"
+#include "Global.h"
+#include "gestionnairegrabber.h"
 
 class QPointF;
 
@@ -17,11 +19,11 @@ class ScrollWindow;
 /// Represents a GUI element that visualizes and allows mouse interaction with
 /// an Inventory. When an item in the inventory viewer is clicked, the
 /// InventoryViewer emits a signal.
-class HPViewer : public Gui
+class GrabbedViewer : public Gui
 {
     Q_OBJECT
 public:
-    HPViewer(Entity *player);
+    GrabbedViewer(gestionnaireGrabber *grabber);
 
     QGraphicsItem* getGraphicsItem();
 
@@ -38,7 +40,7 @@ public:
 
 
 public slots :
-    void draw_(Entity *player);
+    void draw_();
 
 private:
     double border_;

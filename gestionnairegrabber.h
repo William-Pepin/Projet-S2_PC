@@ -13,7 +13,8 @@ class gestionnaireGrabber : public QObject
 public:
     gestionnaireGrabber(qge::Entity *player);
 
-
+signals :
+    void Grab();
 
 public slots:
     void Grabbed(qge::Entity *player, qge::Entity *collided);

@@ -31,6 +31,8 @@
 #include "gestionnairegrabber.h"
 #include "controller.h"
 #include "tty_com.cpp"
+#include "qge/grabbedviewer.h"
+
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -233,7 +235,9 @@ int main(int argc, char *argv[])
 
     // ------------------ UI ------------------ //
     qge::BatteryViewer *battery = new qge::BatteryViewer(GESTIONNAIRE_BATTERIE);
-    qge::HPViewer *hp = new qge::HPViewer();
+    qge::HPViewer *hp = new qge::HPViewer(player);
+    qge::GrabbedViewer *grabbed = new qge::GrabbedViewer(gesGrab);
+    game->addGui(grabbed);
     game->addGui(battery);
     game->addGui(hp);
 

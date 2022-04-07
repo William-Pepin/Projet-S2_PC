@@ -34,27 +34,29 @@ void gestionnaireGrabber::Grabbed(qge::Entity *player, qge::Entity *collided)
 
         timerInvicible->start(5000);
         player->setHealth(player->health()-1);
+        emit player->healthChanged(player);
         timerShake->start(10);
         IS_GRABBED = true;
         isInvicible = true;
         canBeGrab=false;
+        emit Grab();
     }
 }
 
 void gestionnaireGrabber::invicible()
 {
-    qDebug() << "invicible";
     isInvicible = false;
 }
 
 void gestionnaireGrabber::timeoutShake()
 {
-    qDebug() << "timeoutShake";
+
     if(ACC == true && IS_GRABBED)
     {
         timerShake->stop();
         IS_GRABBED = false;
         ACC = false;
+        emit Grab();
     }else
     {
         timerShake->start(10);
@@ -65,7 +67,7 @@ void gestionnaireGrabber::timeoutShake()
 
 void gestionnaireGrabber::timoutResetTrigger()
 {
-    canBeGrab=false;
+    canBeGrab = false;
 }
 
 void gestionnaireGrabber::willBeGrab()
