@@ -14,6 +14,7 @@ public:
          bool trig_left;
          bool trig_right;
          bool button_jstick;
+         bool last_button_trig_left;
          bool last_button_jstick;
          int angle_jstick;
          bool acc;

@@ -8,6 +8,8 @@
 #include "Global.h"
 
 #include "QDebug"
+#include <thread>
+#include <chrono>
 
 #define PI 3.1415926535329
 
@@ -113,6 +115,30 @@ void ECKeyboardMover4Directional::moveStep_()
     qDebug() << acc; // same
 
     CONTROLLER->bargraph = GESTIONNAIRE_BATTERIE->getBatteryState() * 2;
+
+    bool trigLeft = CONTROLLER->trig_left;
+    if(trigLeft)
+    {
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    trigLeft = false;
+    bool isPaused = true;
+    GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        while(isPaused)
+        {
+
+            if(trigLeft)
+            {
+                isPaused = false;
+                GESTIONNAIRE_BATTERIE->getIntervalTimer()->start();
+            }
+            trigLeft = CONTROLLER->trig_left;
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        trigLeft = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
+    CONTROLLER->last_button_trig_left = CONTROLLER->trig_left;
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){
