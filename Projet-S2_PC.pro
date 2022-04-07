@@ -12,6 +12,7 @@ CONFIG += c++11
 
 SOURCES += \
     gestionnairebattery.cpp \
+    gestionnairegrabber.cpp \
     itembattery.cpp \
     tty_com.cpp \
     lightsource.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     Global.h \
+    gestionnairegrabber.h \
     serial/SerialPort.hpp \
     json.hpp \
     lightsource.h \

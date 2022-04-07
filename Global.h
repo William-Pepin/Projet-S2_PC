@@ -6,5 +6,8 @@
 
 extern qge::PathingMap* PATH_MAP;
 extern qge::Entity* FLASH_LIGHT;
+extern bool IS_GRABBED;
+extern bool ACC;
+
 
 #endif // GLOBAL_H

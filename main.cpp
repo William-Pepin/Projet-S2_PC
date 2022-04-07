@@ -28,6 +28,7 @@
 #include "lightsource.h"
 #include "gestionnairebattery.h"
 #include "itembattery.h"
+#include "gestionnairegrabber.h"
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -37,6 +38,8 @@ void buildPathMap();
 
 qge::PathingMap *PATH_MAP;
 qge::Entity* FLASH_LIGHT;
+bool IS_GRABBED;
+bool ACC;
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
@@ -95,6 +98,8 @@ qge::Entity *buildGhost()
     qge::AngledSprite *ghostSprite = buildGhostSprite(entity, ghostSpriteSheet);
 
     entity->setSprite(ghostSprite);
+
+    entity->setGroup(666);
 
     return entity;
 }
@@ -170,6 +175,12 @@ int main(int argc, char *argv[])
     qge::ECCameraFollower *cameraFollowerController = new qge::ECCameraFollower(player);
     qge::ECItemPickerUpper *itemPicker = new qge::ECItemPickerUpper(player);
     player->moveBy(10, 10);
+
+    IS_GRABBED = false;
+    ACC = false;
+
+
+    gestionnaireGrabber *gesGrab = new gestionnaireGrabber(player);
 
     keyboardMoverController->setStepSize(16);
 

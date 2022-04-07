@@ -82,9 +82,10 @@ void ECKeyboardMover4Directional::moveStep_()
     bool sPressed = entitysGame->keysPressed().count(Qt::Key_S);
     bool aPressed = entitysGame->keysPressed().count(Qt::Key_A);
     bool dPressed = entitysGame->keysPressed().count(Qt::Key_D);
+    bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
 
     // move up if W is pressed
-    if (wPressed){
+    if (wPressed && !IS_GRABBED){
         // find newPt to move to
         double newX = entity->x();
         double newY = entity->y() - stepSize_;
@@ -100,7 +101,7 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // move down if S is pressed
-    if (sPressed){
+    if (sPressed && !IS_GRABBED){
         double newX = entity->pos().x();
         double newY = entity->pos().y() + stepSize_;
         QPointF newPt(newX,newY);
@@ -115,7 +116,7 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // move left if A is pressed
-    if (aPressed){
+    if (aPressed && !IS_GRABBED){
         double newX = entity->pos().x() - stepSize_;
         double newY = entity->pos().y();
         QPointF newPt(newX,newY);
@@ -130,7 +131,7 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // move right if D is pressed
-    if (dPressed){
+    if (dPressed && !IS_GRABBED){
         double newX = entity->pos().x() + stepSize_;
         double newY = entity->pos().y();
         QPointF newPt(newX,newY);
@@ -143,6 +144,12 @@ void ECKeyboardMover4Directional::moveStep_()
         }
         return;
     }
+
+    if (hPressed && IS_GRABBED)
+    {
+       ACC = true;
+    }
+
 
     // if none of the keys are pressed, play stand animation at currently facing direction
     if (!wPressed && !aPressed && !sPressed && !dPressed){
