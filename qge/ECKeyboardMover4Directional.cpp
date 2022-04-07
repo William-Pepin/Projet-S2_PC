@@ -78,11 +78,14 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // find out which keys are pressed during this move step
-    bool wPressed = entitysGame->keysPressed().count(Qt::Key_W);
-    bool sPressed = entitysGame->keysPressed().count(Qt::Key_S);
-    bool aPressed = entitysGame->keysPressed().count(Qt::Key_A);
-    bool dPressed = entitysGame->keysPressed().count(Qt::Key_D);
+
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
+    
+    bool wPressed = CONTROLLER->dpad_up;
+    bool sPressed = CONTROLLER->dpad_down;
+    bool aPressed = CONTROLLER->dpad_left;
+    bool dPressed = CONTROLLER->dpad_right;
+
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){

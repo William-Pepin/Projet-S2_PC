@@ -14,9 +14,10 @@ SOURCES += \
     gestionnairebattery.cpp \
     gestionnairegrabber.cpp \
     itembattery.cpp \
-    tty_com.cpp \
     lightsource.cpp \
     serial/SerialPort.cpp \
+    controller.cpp \
+    tty_com.cpp \
     main.cpp
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     json.hpp \
     lightsource.h \
     gestionnairebattery.h \
+    controller.h \
     itembattery.h
 
 FORMS +=

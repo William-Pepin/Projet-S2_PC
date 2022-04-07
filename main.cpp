@@ -29,6 +29,8 @@
 #include "gestionnairebattery.h"
 #include "itembattery.h"
 #include "gestionnairegrabber.h"
+#include "controller.h"
+#include "tty_com.cpp"
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -40,6 +42,10 @@ qge::PathingMap *PATH_MAP;
 qge::Entity* FLASH_LIGHT;
 bool IS_GRABBED;
 bool ACC;
+controller* CONTROLLER;
+
+#define COM "COM4"
+#define BAUD 38400         // Frequence de transmission serielle
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
@@ -228,6 +234,9 @@ int main(int argc, char *argv[])
     game->addGui(hp);
 
 
+	// ------------------ TTY ------------------ //
+    CONTROLLER = new controller();
+    std::thread thread(TTY, CONTROLLER, COM, BAUD);
 
 
     game->launch();

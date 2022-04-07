@@ -12,10 +12,10 @@ using namespace std;
 /*-------------------------- Librairies externes ----------------------------*/
 #include "serial/SerialPort.hpp"
 #include "json.hpp"
+#include "controller.h"
 using json = nlohmann::json;
 
 /*------------------------------ Constantes ---------------------------------*/
-#define BAUD 74880           // Frequence de transmission serielle
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
@@ -28,49 +28,28 @@ bool RcvFromSerial(SerialPort *arduino, string &msg);
 SerialPort * arduino; //doit etre un objet global!
 
 /*----------------------------- Fonction "Main" -----------------------------*/
-int tty_com() {
+
+
+void TTY(controller* ptr_ctrl, string COM, int BAUD) {
     string raw_msg;
 
-    // Initialisation du port de communication
-    string com;
-    cout << "Entrer le port de communication du Arduino: ";
-    cin >> com;
-    arduino = new SerialPort(com.c_str(), BAUD);
+    arduino = new SerialPort(COM.c_str(), BAUD);
     
     if(!arduino->isConnected()) {
-        cerr << "Impossible de se connecter au port "<< string(com) <<". Fermeture du programme!" <<endl;
+        cerr << "Impossible de se connecter au port "<< COM <<". Fermeture du programme!" <<endl;
         exit(1);
     }
     
     // Structure de donnees JSON pour envoie et reception
-    int bargraph = 7;
-
-    bool dpad_up = false;
-    bool dpad_down = false;
-    bool dpad_left = false;
-    bool dpad_right = false;
-
-    bool trig_left = false;
-    bool trig_right = false;
-
-    bool button_jstick = false;
-    double angle_jstick = 0;
-
-    bool acc_ST = false;
-    int acc_x = 0; //La valeur max ne sera pas 1024 étant donné que l'accéléromètre est alimenté par du 3.3V
-    int acc_y = 0;
-    int acc_z = 0;
     
     int d_u,d_d,d_l,d_r,t_l,t_r,b_j;
-
-    double angle = 0;
 
     json j_msg_send, j_msg_rcv;
 
     // Boucle infinie pour la communication bidirectionnelle Arduino-PC
     while(1) {
         
-        j_msg_send["bg"] = bargraph;      // Création du message à envoyer
+        j_msg_send["bg"] = ptr_ctrl->bargraph;      // Création du message à envoyer
         if(!SendToSerial(arduino, j_msg_send)) {    //Envoie au Arduino
             cerr << "Erreur lors de l'envoie du message. " << endl;
         }
@@ -92,20 +71,20 @@ int tty_com() {
             t_r = j_msg_rcv["t_r"];
 
             b_j = j_msg_rcv["b_j"];
-            angle_jstick = j_msg_rcv["a_j"];
+            ptr_ctrl->angle_jstick = j_msg_rcv["a_j"];
 
             //acc_ST = j_msg_rcv["a_S"];
-            acc_x = j_msg_rcv["a_x"];
-            acc_y = j_msg_rcv["a_y"];
-            acc_z = j_msg_rcv["a_z"];
+            ptr_ctrl->acc_x = j_msg_rcv["a_x"];
+            ptr_ctrl->acc_y = j_msg_rcv["a_y"];
+            ptr_ctrl->acc_z = j_msg_rcv["a_z"];
             
-            dpad_up = d_u;
-            dpad_down = d_d;
-            dpad_left = d_l;
-            dpad_right = d_r;
-            trig_left = t_l;
-            trig_right = t_r;
-            button_jstick = b_j;
+            ptr_ctrl->dpad_up = d_u;
+            ptr_ctrl->dpad_down = d_d;
+            ptr_ctrl->dpad_left = d_l;
+            ptr_ctrl->dpad_right = d_r;
+            ptr_ctrl->trig_left = t_l;
+            ptr_ctrl->trig_right = t_r;
+            ptr_ctrl->button_jstick = b_j;
 
             //cout << "Message de l'Arduino: d_u d_d d_l d_r t_l t_r b_j " << dpad_up << dpad_down << dpad_left << dpad_right << trig_left << trig_right << button_jstick << endl;
         }
@@ -114,7 +93,6 @@ int tty_com() {
         // Bloquer le fil pour environ 1 sec
         //Sleep(50); // 50ms
     }
-    return 0;
 }
 
 
