@@ -15,6 +15,8 @@ public:
    GestionnaireBattery(ItemBattery *batteries[10]);
    ~GestionnaireBattery();
     void add(ItemBattery *batteries);
+    QTimer * getIntervalTimer();
+    int getBatteryState();
 
 signals:
    void ChangerUI(int state);

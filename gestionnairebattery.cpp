@@ -1,5 +1,6 @@
 #include "gestionnairebattery.h"
 #include "QDebug"
+#include "Global.h"
 
 GestionnaireBattery::~GestionnaireBattery()
 {
@@ -34,21 +35,24 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[10])
 
 void GestionnaireBattery::BatteryPrise(int position)
 {
-    ///Si bargraph déjà plein, reset seulement timers et énergie
-    if (batteryState == batteryStateMax)
+    if(CONTROLLER->trig_right)
     {
-      intervalTimer->start(batteryInterval);   
+        ///Si bargraph déjà plein, reset seulement timers et énergie
+        if (batteryState == batteryStateMax)
+        {
+          //intervalTimer->start(batteryInterval);
+        }
+        else //On change image (émet signal)
+        {
+           batteryState += 1;
+           //intervalTimer->start(batteryInterval);
+           emit ChangerUI(batteryState);
+        }
+        emit Flashdead(false);
+        qDebug() << position;
+        //qge::Map *map = battery[position]->map();
+        //map->removeEntity(battery[position]);
     }
-    else //On change image (émet signal)
-    {
-       batteryState += 1;
-       intervalTimer->start(batteryInterval);
-       emit ChangerUI(batteryState);
-    }
-    emit Flashdead(false);
-    qDebug() << position;
-    //qge::Map *map = battery[position]->map();
-    //map->removeEntity(battery[position]);
 
 }
 
@@ -56,6 +60,11 @@ void GestionnaireBattery::BatteryPrise(int position)
 void GestionnaireBattery::add(ItemBattery *batteries)
 {
 
+}
+
+QTimer* GestionnaireBattery::getIntervalTimer()
+{
+    return intervalTimer;
 }
 
 void GestionnaireBattery::intervalResponse()
@@ -71,3 +80,8 @@ void GestionnaireBattery::intervalResponse()
     }
     emit ChangerUI(batteryState);
 }
+
+int GestionnaireBattery::getBatteryState()
+{
+    return batteryState;
+};

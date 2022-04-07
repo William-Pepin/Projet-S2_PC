@@ -11,7 +11,7 @@ class LightSource: public qge::EntityController
 {
     Q_OBJECT
 public:
-    LightSource(qge::Entity* entity, double fovAngle=90, double fovDistance=600);
+    LightSource(qge::Entity* entity, double fovAngle=90, double fovDistance=250);
     ~LightSource();
 
     std::unordered_set<qge::Entity*> entitiesInView();
@@ -23,6 +23,7 @@ public:
     void turnOff();
 
     void setShowFOV(bool tf);
+    bool getShowFOV();
 
 public slots:
     void checkFov_();

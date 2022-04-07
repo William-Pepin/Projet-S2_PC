@@ -7,6 +7,12 @@
 #include "EntitySprite.h"
 #include "Global.h"
 
+#include "QDebug"
+#include <thread>
+#include <chrono>
+
+#define PI 3.1415926535329
+
 using namespace qge;
 
 ECKeyboardMover4Directional::ECKeyboardMover4Directional(Entity *entity):
@@ -78,11 +84,62 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // find out which keys are pressed during this move step
-    bool wPressed = entitysGame->keysPressed().count(Qt::Key_W);
-    bool sPressed = entitysGame->keysPressed().count(Qt::Key_S);
-    bool aPressed = entitysGame->keysPressed().count(Qt::Key_A);
-    bool dPressed = entitysGame->keysPressed().count(Qt::Key_D);
+    bool wPressed = entitysGame->keysPressed().count(Qt::Key_W) || CONTROLLER->dpad_up;
+    bool sPressed = entitysGame->keysPressed().count(Qt::Key_S) || CONTROLLER->dpad_down;
+    bool aPressed = entitysGame->keysPressed().count(Qt::Key_A) || CONTROLLER->dpad_left;
+    bool dPressed = entitysGame->keysPressed().count(Qt::Key_D) || CONTROLLER->dpad_right;
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
+    ACC = CONTROLLER->acc;
+
+    int j_stick = CONTROLLER->angle_jstick;
+    FLASH_LIGHT_ROTATER->rotateTowards(j_stick);
+    bool toggleFlashlight = (CONTROLLER->button_jstick);
+    if(GESTIONNAIRE_BATTERIE->getBatteryState() > 0)
+    {
+    if(toggleFlashlight && !(CONTROLLER->last_button_jstick))
+    {
+        if(LIGHT_SOURCE->getShowFOV())
+            GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        else
+            GESTIONNAIRE_BATTERIE->getIntervalTimer()->start();
+        LIGHT_SOURCE->setShowFOV(!LIGHT_SOURCE->getShowFOV());
+    }
+    }
+    else
+    {
+        GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        LIGHT_SOURCE->setShowFOV(false);
+    }
+    CONTROLLER->last_button_jstick = toggleFlashlight;
+
+    bool acc = CONTROLLER->acc; // enlever whenever
+    qDebug() << acc; // same
+
+    CONTROLLER->bargraph = GESTIONNAIRE_BATTERIE->getBatteryState() * 2;
+
+    bool trigLeft = CONTROLLER->trig_left;
+    if(trigLeft)
+    {
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    trigLeft = false;
+    bool isPaused = true;
+    GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        while(isPaused)
+        {
+
+            if(trigLeft)
+            {
+                isPaused = false;
+                GESTIONNAIRE_BATTERIE->getIntervalTimer()->start();
+            }
+            trigLeft = CONTROLLER->trig_left;
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        trigLeft = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
+    CONTROLLER->last_button_trig_left = CONTROLLER->trig_left;
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){
