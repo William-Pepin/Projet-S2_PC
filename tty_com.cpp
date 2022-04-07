@@ -128,10 +128,12 @@ bool RcvFromSerial(SerialPort *arduino, string &msg) {
 
     msg.clear(); // clear string
     // Read serialport until '\n' character (Blocking)
-    while(msg.back()!='\n') {
-        if(msg.size()>MSG_MAX_SIZE) {
-            return false;
-        }
+    string check = "";
+    if(!msg.empty())
+        check = msg.substr(msg.length() - 1);
+    while(check !="\n") {
+        if(!msg.empty())
+            check = msg.substr(msg.length() - 1);
 
         buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
         str_buffer.assign(char_buffer, buffer_size);
