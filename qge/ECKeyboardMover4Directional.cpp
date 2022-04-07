@@ -7,6 +7,8 @@
 #include "EntitySprite.h"
 #include "Global.h"
 
+#define PI 3.1415926535329
+
 using namespace qge;
 
 ECKeyboardMover4Directional::ECKeyboardMover4Directional(Entity *entity):
@@ -85,6 +87,8 @@ void ECKeyboardMover4Directional::moveStep_()
     bool sPressed = CONTROLLER->dpad_down;
     bool aPressed = CONTROLLER->dpad_left;
     bool dPressed = CONTROLLER->dpad_right;
+    int j_stick = CONTROLLER->angle_jstick;
+    FLASH_LIGHT_ROTATER->rotateTowards(j_stick);
 
 
     // move up if W is pressed

@@ -42,10 +42,11 @@ qge::PathingMap *PATH_MAP;
 qge::Entity* FLASH_LIGHT;
 bool IS_GRABBED;
 bool ACC;
+qge::ECRotater* FLASH_LIGHT_ROTATER;
 controller* CONTROLLER;
 
 #define COM "COM4"
-#define BAUD 38400         // Frequence de transmission serielle
+#define BAUD 19200         // Frequence de transmission serielle
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
@@ -168,13 +169,13 @@ int main(int argc, char *argv[])
     qge::TopDownSprite* flashLightSprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/characterSpritesheets/light.png"));
     FLASH_LIGHT->setSprite(flashLightSprite);
     LightSource *lightSource = new LightSource(FLASH_LIGHT);
-    qge::ECRotater* lightSourceRotater = new qge::ECRotater(FLASH_LIGHT);
+    FLASH_LIGHT_ROTATER = new qge::ECRotater(FLASH_LIGHT);
     lightSource->setShowFOV(true);
     map->addEntity(FLASH_LIGHT);
     FLASH_LIGHT->setOrigin(QPointF(20, 20));
     FLASH_LIGHT->moveBy(250,250);
 
-    lightSourceRotater->rotateTowards(90); // Utiliser cette fonction pour rotate la flashlight
+    FLASH_LIGHT_ROTATER->rotateTowards(90); // Utiliser cette fonction pour rotate la flashlight
 
     // player control
     qge::ECKeyboardMover4Directional *keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
@@ -237,7 +238,6 @@ int main(int argc, char *argv[])
 	// ------------------ TTY ------------------ //
     CONTROLLER = new controller();
     std::thread thread(TTY, CONTROLLER, COM, BAUD);
-
 
     game->launch();
     player->moveBy(10, 10);
