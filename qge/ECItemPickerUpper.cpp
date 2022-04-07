@@ -2,7 +2,7 @@
 
 #include "Inventory.h"
 #include "Item.h"
-
+#include "Global.h"
 using namespace qge;
 
 ECItemPickerUpper::ECItemPickerUpper(Entity *entity):
@@ -18,14 +18,19 @@ ECItemPickerUpper::ECItemPickerUpper(Entity *entity):
 /// Executed whenever the controlled entity collides with anything.
 void ECItemPickerUpper::onCollide(Entity *controlledEntity, Entity *collidedWith)
 {
-    // do nothing if it didnt colide with an item
-    Item* asItem = dynamic_cast<Item*>(collidedWith);
-    if (asItem == nullptr)
-        return;
+    if(CONTROLLER->trig_right)
+    {
+        // do nothing if it didnt colide with an item
+        Item* asItem = dynamic_cast<Item*>(collidedWith);
+        if (asItem == nullptr)
+            return;
 
-    // do nothing if the entity does not have an inventory
-    Inventory* inv = controlledEntity->inventory();
-    if (inv == nullptr)
-        return;
-    inv->addItem(asItem);
+        // do nothing if the entity does not have an inventory
+        Inventory* inv = controlledEntity->inventory();
+        if (inv == nullptr)
+            return;
+
+            inv->addItem(asItem);
+    }
+
 }

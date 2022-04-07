@@ -7,6 +7,8 @@
 #include "EntitySprite.h"
 #include "Global.h"
 
+#include "QDebug"
+
 #define PI 3.1415926535329
 
 using namespace qge;
@@ -80,13 +82,12 @@ void ECKeyboardMover4Directional::moveStep_()
     }
 
     // find out which keys are pressed during this move step
-
+    bool wPressed = entitysGame->keysPressed().count(Qt::Key_W) || CONTROLLER->dpad_up;
+    bool sPressed = entitysGame->keysPressed().count(Qt::Key_S) || CONTROLLER->dpad_down;
+    bool aPressed = entitysGame->keysPressed().count(Qt::Key_A) || CONTROLLER->dpad_left;
+    bool dPressed = entitysGame->keysPressed().count(Qt::Key_D) || CONTROLLER->dpad_right;
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
-    
-    bool wPressed = CONTROLLER->dpad_up;
-    bool sPressed = CONTROLLER->dpad_down;
-    bool aPressed = CONTROLLER->dpad_left;
-    bool dPressed = CONTROLLER->dpad_right;
+
     int j_stick = CONTROLLER->angle_jstick;
     FLASH_LIGHT_ROTATER->rotateTowards(j_stick);
     bool toggleFlashlight = (CONTROLLER->button_jstick);
@@ -107,6 +108,11 @@ void ECKeyboardMover4Directional::moveStep_()
         LIGHT_SOURCE->setShowFOV(false);
     }
     CONTROLLER->last_button_jstick = toggleFlashlight;
+
+    bool acc = CONTROLLER->acc; // enlever whenever
+    qDebug() << acc; // same
+
+    CONTROLLER->bargraph = GESTIONNAIRE_BATTERIE->getBatteryState() * 2;
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){

@@ -184,6 +184,7 @@ int main(int argc, char *argv[])
     qge::ECCameraFollower *cameraFollowerController = new qge::ECCameraFollower(player);
     qge::ECItemPickerUpper *itemPicker = new qge::ECItemPickerUpper(player);
     player->moveBy(10, 10);
+    player->setHealth(3);
 
     IS_GRABBED = false;
     ACC = false;

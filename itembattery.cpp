@@ -38,7 +38,7 @@ ItemBattery::~ItemBattery(){
 void ItemBattery::use(qge::Entity *player, qge::Entity *collided)
 {
 
-    if (collided->group() ==5) {
+    if (collided->group() == 5) {
         emit BatteryColision(this->position);
         //this->setGroup(1000);
 

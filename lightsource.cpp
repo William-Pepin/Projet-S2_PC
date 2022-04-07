@@ -16,16 +16,18 @@ LightSource::LightSource(qge::Entity *entity, double fovAngle, double fovDistanc
     timerCheckFov_->start(fieldOfViewCheckDelayMs_);
 
     // create polygon item for visualization purposes
+
+
     fovVisual_= new QGraphicsPolygonItem();
+    fovVisual_->setPen(Qt::NoPen);
 
 
 
     QBrush brush;
-    QPainter painter;
     brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::yellow);
+    brush.setColor(Qt::black);
     fovVisual_->setBrush(brush);
-    fovVisual_->setOpacity(0.3);
+    fovVisual_->setOpacity(0.90);
 }
 
 LightSource::~LightSource()
@@ -118,11 +120,41 @@ std::unordered_set<qge::Entity *> LightSource::entitiesInView()
     points.append(p2);
     points.append(p3);
 
+    QVector<QPointF> c_points;
+    QPointF p_pos = entityControlled()->pos();
+    QPointF c_p1 = QPointF(p_pos.x() + 1000, p_pos.y() + 500);
+    QPointF c_p2 = QPointF(p_pos.x() - 1000, p_pos.y() + 500);
+    QPointF c_p3 = QPointF(p_pos.x() - 1000, p_pos.y() - 500);
+    QPointF c_p4 = QPointF(p_pos.x() + 1000, p_pos.y() - 500);
+
+    c_points.append(c_p1);
+    c_points.append(c_p2);
+    c_points.append(c_p3);
+    c_points.append(c_p4);
+
+    QPolygonF poly_c(c_points);
     QPolygonF poly(points);
 
-    fovVisual_->setPolygon(poly);
+    poly_c = poly_c.subtracted(poly);
+
+    fovVisual_->setPolygon(poly_c);
 
     if (showFOV_){
+        QPolygonF poly_c(c_points);
+        QPolygonF poly(points);
+
+        poly_c = poly_c.subtracted(poly);
+
+        fovVisual_->setPolygon(poly_c);
+
+        entitysMap->scene()->removeItem(fovVisual_);
+        entitysMap->scene()->addItem(fovVisual_);
+    }else
+    {
+        QPolygonF poly_c(c_points);
+
+        fovVisual_->setPolygon(poly_c);
+
         entitysMap->scene()->removeItem(fovVisual_);
         entitysMap->scene()->addItem(fovVisual_);
     }
@@ -172,10 +204,6 @@ void LightSource::setShowFOV(bool tf)
 {
     showFOV_ = tf;
 
-    // if false, make sure visual is removed
-    if (!showFOV_){
-        ensureFOVVisualIsRemoved_();
-    }
 }
 
 bool LightSource::getShowFOV()

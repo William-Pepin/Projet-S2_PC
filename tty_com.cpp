@@ -7,6 +7,7 @@
 /*------------------------------ Librairies ---------------------------------*/
 #include <iostream>
 #include <string>
+#include <thread>
 using namespace std;
 
 /*-------------------------- Librairies externes ----------------------------*/
@@ -36,8 +37,11 @@ void TTY(controller* ptr_ctrl, string COM, int BAUD) {
     arduino = new SerialPort(COM.c_str(), BAUD);
     
     if(!arduino->isConnected()) {
-        cerr << "Impossible de se connecter au port "<< COM <<". Fermeture du programme!" <<endl;
-        exit(1);
+        cout << "Impossible de se connecter au port "<< COM <<". Fermeture du thread!" <<endl;
+        while(1)
+        {
+            this_thread::sleep_for(20000000000000000ms);
+        }
     }
     
     // Structure de donnees JSON pour envoie et reception
