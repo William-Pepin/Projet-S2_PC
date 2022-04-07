@@ -51,7 +51,7 @@ LightSource* LIGHT_SOURCE;
 GestionnaireBattery* GESTIONNAIRE_BATTERIE;
 
 #define COM "COM4"
-#define BAUD 19200         // Frequence de transmission serielle
+#define BAUD 57600         // Frequence de transmission serielle
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
