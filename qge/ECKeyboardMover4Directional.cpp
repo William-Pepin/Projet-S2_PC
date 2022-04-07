@@ -89,6 +89,7 @@ void ECKeyboardMover4Directional::moveStep_()
     bool aPressed = entitysGame->keysPressed().count(Qt::Key_A) || CONTROLLER->dpad_left;
     bool dPressed = entitysGame->keysPressed().count(Qt::Key_D) || CONTROLLER->dpad_right;
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
+    ACC = CONTROLLER->acc;
 
     int j_stick = CONTROLLER->angle_jstick;
     FLASH_LIGHT_ROTATER->rotateTowards(j_stick);

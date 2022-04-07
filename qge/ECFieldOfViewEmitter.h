@@ -29,7 +29,7 @@ class ECFieldOfViewEmitter: public EntityController
 {
     Q_OBJECT
 public:
-    ECFieldOfViewEmitter(Entity* entity, double fovAngle=90, double fovDistance=600);
+    ECFieldOfViewEmitter(Entity* entity, double fovAngle=100, double fovDistance=800);
     ~ECFieldOfViewEmitter();
 
     std::unordered_set<Entity*> entitiesInView();
