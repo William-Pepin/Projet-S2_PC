@@ -18,7 +18,7 @@ ECItemPickerUpper::ECItemPickerUpper(Entity *entity):
 /// Executed whenever the controlled entity collides with anything.
 void ECItemPickerUpper::onCollide(Entity *controlledEntity, Entity *collidedWith)
 {
-    if(CONTROLLER->trig_right)
+    if(CONTROLLER->trig_right || interact == true)
     {
         // do nothing if it didnt colide with an item
         Item* asItem = dynamic_cast<Item*>(collidedWith);

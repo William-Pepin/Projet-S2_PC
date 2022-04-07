@@ -17,5 +17,6 @@ extern qge::ECRotater* FLASH_LIGHT_ROTATER;
 extern LightSource* LIGHT_SOURCE;
 extern controller* CONTROLLER;
 extern GestionnaireBattery* GESTIONNAIRE_BATTERIE;
+extern bool interact;
 
 #endif // GLOBAL_H

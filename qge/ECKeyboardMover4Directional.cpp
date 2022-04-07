@@ -89,6 +89,8 @@ void ECKeyboardMover4Directional::moveStep_()
     bool aPressed = entitysGame->keysPressed().count(Qt::Key_A) || CONTROLLER->dpad_left;
     bool dPressed = entitysGame->keysPressed().count(Qt::Key_D) || CONTROLLER->dpad_right;
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
+    bool ePressed = entitysGame->keysPressed().count(Qt::Key_E);
+
     ACC = CONTROLLER->acc;
 
     int j_stick = CONTROLLER->angle_jstick;
@@ -207,6 +209,13 @@ void ECKeyboardMover4Directional::moveStep_()
        ACC = true;
     }
 
+    if (ePressed)
+    {
+        interact = true;
+    }else
+    {
+        interact = false;
+    }
 
     // if none of the keys are pressed, play stand animation at currently facing direction
     if (!wPressed && !aPressed && !sPressed && !dPressed){

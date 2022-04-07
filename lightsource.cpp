@@ -27,7 +27,7 @@ LightSource::LightSource(qge::Entity *entity, double fovAngle, double fovDistanc
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::black);
     fovVisual_->setBrush(brush);
-    fovVisual_->setOpacity(0.90);
+    fovVisual_->setOpacity(0.9);
 }
 
 LightSource::~LightSource()

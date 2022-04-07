@@ -44,6 +44,7 @@ qge::PathingMap *PATH_MAP;
 qge::Entity* FLASH_LIGHT;
 bool IS_GRABBED;
 bool ACC;
+bool interact;
 qge::ECRotater* FLASH_LIGHT_ROTATER;
 controller* CONTROLLER;
 LightSource* LIGHT_SOURCE;
@@ -129,6 +130,7 @@ qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet sprite
 
 int main(int argc, char *argv[])
 {
+    interact = false;
     QApplication a(argc, argv);
 
     // Create TerrainLayer

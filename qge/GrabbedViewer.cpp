@@ -7,7 +7,7 @@ using namespace qge;
 
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
 GrabbedViewer::GrabbedViewer(gestionnaireGrabber *grabber):
-    border_(15),
+    border_(1),
     scrollWindow_(new ScrollWindow(530,330))
 {
     // defaults
@@ -17,6 +17,7 @@ GrabbedViewer::GrabbedViewer(gestionnaireGrabber *grabber):
 
     this->setGuiPos(QPointF(360,200));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/notgrab.png"));
+    scrollWindow_->showBorder(false);
     connect(grabber, &gestionnaireGrabber::Grab , this, &GrabbedViewer::draw_);
 }
 

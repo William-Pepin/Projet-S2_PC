@@ -35,7 +35,7 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[10])
 
 void GestionnaireBattery::BatteryPrise(int position)
 {
-    if(CONTROLLER->trig_right)
+    if(CONTROLLER->trig_right || interact)
     {
         ///Si bargraph déjà plein, reset seulement timers et énergie
         if (batteryState == batteryStateMax)

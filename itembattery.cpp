@@ -40,13 +40,13 @@ void ItemBattery::use(qge::Entity *player, qge::Entity *collided)
 
     if (collided->group() == 5) {
         emit BatteryColision(this->position);
-        //this->setGroup(1000);
-
-        /*qge::Map *map = this->map();
-        map->removeEntity(this);*/
+        use_();
     }
 
 
 }
 
-void ItemBattery::use_(){}
+void ItemBattery::use_()
+{
+
+}
