@@ -11,8 +11,5 @@ controller::controller()
     trig_right = false;
     button_jstick = false;
     angle_jstick = 0;
-    acc_x = 0;
-    acc_y = 0;
-    acc_z = 0;
-
+    acc = false;
 }

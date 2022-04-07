@@ -89,7 +89,24 @@ void ECKeyboardMover4Directional::moveStep_()
     bool dPressed = CONTROLLER->dpad_right;
     int j_stick = CONTROLLER->angle_jstick;
     FLASH_LIGHT_ROTATER->rotateTowards(j_stick);
-
+    bool toggleFlashlight = (CONTROLLER->button_jstick);
+    if(GESTIONNAIRE_BATTERIE->getBatteryState() > 0)
+    {
+    if(toggleFlashlight && !(CONTROLLER->last_button_jstick))
+    {
+        if(LIGHT_SOURCE->getShowFOV())
+            GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        else
+            GESTIONNAIRE_BATTERIE->getIntervalTimer()->start();
+        LIGHT_SOURCE->setShowFOV(!LIGHT_SOURCE->getShowFOV());
+    }
+    }
+    else
+    {
+        GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+        LIGHT_SOURCE->setShowFOV(false);
+    }
+    CONTROLLER->last_button_jstick = toggleFlashlight;
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){

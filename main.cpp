@@ -44,6 +44,8 @@ bool IS_GRABBED;
 bool ACC;
 qge::ECRotater* FLASH_LIGHT_ROTATER;
 controller* CONTROLLER;
+LightSource* LIGHT_SOURCE;
+GestionnaireBattery* GESTIONNAIRE_BATTERIE;
 
 #define COM "COM4"
 #define BAUD 19200         // Frequence de transmission serielle
@@ -168,9 +170,9 @@ int main(int argc, char *argv[])
     FLASH_LIGHT = new qge::Entity();
     qge::TopDownSprite* flashLightSprite = new qge::TopDownSprite(QPixmap(":/resources/graphics/characterSpritesheets/light.png"));
     FLASH_LIGHT->setSprite(flashLightSprite);
-    LightSource *lightSource = new LightSource(FLASH_LIGHT);
+    LIGHT_SOURCE = new LightSource(FLASH_LIGHT);
     FLASH_LIGHT_ROTATER = new qge::ECRotater(FLASH_LIGHT);
-    lightSource->setShowFOV(true);
+    LIGHT_SOURCE->setShowFOV(true);
     map->addEntity(FLASH_LIGHT);
     FLASH_LIGHT->setOrigin(QPointF(20, 20));
     FLASH_LIGHT->moveBy(250,250);
@@ -226,10 +228,10 @@ int main(int argc, char *argv[])
         batteries[i]->setPos(batteryPositions[i]);
         map->addEntity(batteries[i]);
     }
-    GestionnaireBattery *gestionBattery = new GestionnaireBattery(batteries);
+    GESTIONNAIRE_BATTERIE = new GestionnaireBattery(batteries);
 
     // ------------------ UI ------------------ //
-    qge::BatteryViewer *battery = new qge::BatteryViewer(gestionBattery);
+    qge::BatteryViewer *battery = new qge::BatteryViewer(GESTIONNAIRE_BATTERIE);
     qge::HPViewer *hp = new qge::HPViewer();
     game->addGui(battery);
     game->addGui(hp);

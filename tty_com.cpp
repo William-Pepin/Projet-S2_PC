@@ -42,7 +42,7 @@ void TTY(controller* ptr_ctrl, string COM, int BAUD) {
     
     // Structure de donnees JSON pour envoie et reception
     
-    int d_u,d_d,d_l,d_r,t_l,t_r,b_j;
+    int d_u,d_d,d_l,d_r,t_l,t_r,b_j,acc;
 
     json j_msg_send, j_msg_rcv;
 
@@ -71,13 +71,11 @@ void TTY(controller* ptr_ctrl, string COM, int BAUD) {
             t_r = j_msg_rcv["t_r"];
 
             b_j = j_msg_rcv["b_j"];
+
+            acc = j_msg_rcv["acc"];
+
             ptr_ctrl->angle_jstick = j_msg_rcv["a_j"];
 
-            //acc_ST = j_msg_rcv["a_S"];
-            ptr_ctrl->acc_x = j_msg_rcv["a_x"];
-            ptr_ctrl->acc_y = j_msg_rcv["a_y"];
-            ptr_ctrl->acc_z = j_msg_rcv["a_z"];
-            
             ptr_ctrl->dpad_up = d_u;
             ptr_ctrl->dpad_down = d_d;
             ptr_ctrl->dpad_left = d_l;
@@ -85,6 +83,7 @@ void TTY(controller* ptr_ctrl, string COM, int BAUD) {
             ptr_ctrl->trig_left = t_l;
             ptr_ctrl->trig_right = t_r;
             ptr_ctrl->button_jstick = b_j;
+            ptr_ctrl->acc = acc;
 
             //cout << "Message de l'Arduino: d_u d_d d_l d_r t_l t_r b_j " << dpad_up << dpad_down << dpad_left << dpad_right << trig_left << trig_right << button_jstick << endl;
         }

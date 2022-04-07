@@ -37,12 +37,12 @@ void GestionnaireBattery::BatteryPrise(int position)
     ///Si bargraph déjà plein, reset seulement timers et énergie
     if (batteryState == batteryStateMax)
     {
-      intervalTimer->start(batteryInterval);   
+      //intervalTimer->start(batteryInterval);
     }
     else //On change image (émet signal)
     {
        batteryState += 1;
-       intervalTimer->start(batteryInterval);
+       //intervalTimer->start(batteryInterval);
        emit ChangerUI(batteryState);
     }
     emit Flashdead(false);
@@ -58,6 +58,11 @@ void GestionnaireBattery::add(ItemBattery *batteries)
 
 }
 
+QTimer* GestionnaireBattery::getIntervalTimer()
+{
+    return intervalTimer;
+}
+
 void GestionnaireBattery::intervalResponse()
 {
     if (batteryState >1)
@@ -71,3 +76,8 @@ void GestionnaireBattery::intervalResponse()
     }
     emit ChangerUI(batteryState);
 }
+
+int GestionnaireBattery::getBatteryState()
+{
+    return batteryState;
+};

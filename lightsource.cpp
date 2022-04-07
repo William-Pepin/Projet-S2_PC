@@ -177,3 +177,8 @@ void LightSource::setShowFOV(bool tf)
         ensureFOVVisualIsRemoved_();
     }
 }
+
+bool LightSource::getShowFOV()
+{
+    return showFOV_;
+}
