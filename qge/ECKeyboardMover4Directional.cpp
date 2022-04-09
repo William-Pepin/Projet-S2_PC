@@ -114,8 +114,7 @@ void ECKeyboardMover4Directional::moveStep_()
     }
     CONTROLLER->last_button_jstick = toggleFlashlight;
 
-    bool acc = CONTROLLER->acc; // enlever whenever
-    qDebug() << acc; // same
+    bool acc = CONTROLLER->acc;
 
     CONTROLLER->bargraph = GESTIONNAIRE_BATTERIE->getBatteryState() * 2;
 
@@ -128,7 +127,6 @@ void ECKeyboardMover4Directional::moveStep_()
     GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
         while(isPaused)
         {
-
             if(trigLeft)
             {
                 isPaused = false;

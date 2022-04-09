@@ -11,7 +11,7 @@ GestionnaireBattery::GestionnaireBattery(ItemBattery *batteries[10])
 {
 
     // Le timer maximum que la batterie peut avoir
-    batteryTimerMax=20*milliToSec;
+    batteryTimerMax=50*milliToSec;
 
     // Nombre Maximum d'état (dessin) différent que la batterie peut contenir
     batteryStateMax=5;
@@ -49,9 +49,6 @@ void GestionnaireBattery::BatteryPrise(int position)
            emit ChangerUI(batteryState);
         }
         emit Flashdead(false);
-        qDebug() << position;
-        //qge::Map *map = battery[position]->map();
-        //map->removeEntity(battery[position]);
     }
 
 }

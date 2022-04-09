@@ -25,14 +25,27 @@
 #include "qge/BatteryViewer.h"
 #include "qge/HPViewer.h"
 #include "qge/ECRotater.h"
+#include "qge/GrabbedViewer.h"
+
 #include "lightsource.h"
 #include "gestionnairebattery.h"
 #include "itembattery.h"
 #include "gestionnairegrabber.h"
 #include "controller.h"
 #include "tty_com.cpp"
-#include "qge/grabbedviewer.h"
 
+qge::PathingMap *PATH_MAP;
+qge::Entity* FLASH_LIGHT;
+qge::ECRotater* FLASH_LIGHT_ROTATER;
+
+bool IS_PAUSED;
+bool IS_GRABBED;
+bool ACC;
+bool interact;
+
+controller* CONTROLLER;
+LightSource* LIGHT_SOURCE;
+GestionnaireBattery* GESTIONNAIRE_BATTERIE;
 
 qge::Entity *buildPlayer();
 qge::AngledSprite *buildPlayerSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
@@ -40,18 +53,8 @@ qge::Entity *buildGhost();
 qge::AngledSprite *buildGhostSprite(qge::Entity *entity, qge::SpriteSheet spriteSheet);
 void buildPathMap();
 
-qge::PathingMap *PATH_MAP;
-qge::Entity* FLASH_LIGHT;
-bool IS_GRABBED;
-bool ACC;
-bool interact;
-qge::ECRotater* FLASH_LIGHT_ROTATER;
-controller* CONTROLLER;
-LightSource* LIGHT_SOURCE;
-GestionnaireBattery* GESTIONNAIRE_BATTERIE;
-
 #define COM "COM4"
-#define BAUD 57600         // Frequence de transmission serielle
+#define BAUD 57600
 
 void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
 {
@@ -70,7 +73,6 @@ void buildPathMap(qge::PathingMap *pathingMap, QPixmap *pixMap, int cellSize)
     }
 }
 
-// SPRITE AND ENTITY
 qge::Entity *buildPlayer()
 {
     qge::Entity *entity = new qge::Entity();
@@ -104,7 +106,7 @@ qge::Entity *buildGhost()
     qge::Entity *entity = new qge::Entity();
 
     // spritesheet
-    qge::SpriteSheet ghostSpriteSheet(":/resources/graphics/characterSpritesheets/ghost-sprite.png",4,2,32,32);
+    qge::SpriteSheet ghostSpriteSheet(":/resources/graphics/characterSpritesheets/ghost-sprite.png",4,2,128,128);
 
     // Extract the spritesheet to the sprite
     qge::AngledSprite *ghostSprite = buildGhostSprite(entity, ghostSpriteSheet);
@@ -146,7 +148,6 @@ int main(int argc, char *argv[])
     map->addTerrainLayer(mansion);
     //map->addTerrainLayer(fog);
 
-
     // create a map grid
     qge::MapGrid *mapGrid = new qge::MapGrid();
     mapGrid->setMapAtPos(map, 0, 0);
@@ -159,7 +160,6 @@ int main(int argc, char *argv[])
     // create a game
     qge::Game *game = new qge::Game(mapGrid, 0, 0);
     game->launch();
-    //map->drawPathingMap();
 
     // player
     qge::Entity *player = buildPlayer();
@@ -193,7 +193,6 @@ int main(int argc, char *argv[])
     IS_GRABBED = false;
     ACC = false;
 
-
     gestionnaireGrabber *gesGrab = new gestionnaireGrabber(player);
 
     keyboardMoverController->setStepSize(16);
@@ -207,7 +206,7 @@ int main(int argc, char *argv[])
         ghosts[i] = buildGhost();
         map->addEntity(ghosts[i]);
 
-        ghosts[i]->setOrigin(QPointF(20, 20));
+        ghosts[i]->setOrigin(QPointF(64, 64));
         ghosts[i]->setPos(ghostsPositions[i]);
         ghosts[i]->sprite()->play("walk", 1, 10, 3);
 
@@ -215,18 +214,13 @@ int main(int argc, char *argv[])
         chasers[i]->addChasee(player);
         chasers[i]->startChasing();
         chasers[i]->setStopDistance(10);
-        chasers[i]->setShowFOV(true);
-
+        //chasers[i]->setShowFOV(true);
     }
-
 
     // -------------- Batteries -------------- //
     ItemBattery** batteries = new ItemBattery*[10];
     QPointF *batteryPositions = new QPointF[10]{QPointF(120, 536), QPointF(38, 1140), QPointF(636, 1464), QPointF(668, 984), QPointF(1300, 462),
                                                  QPointF(539.0, 142.0), QPointF(1656.0, 1270.0), QPointF(2222.0, 1656.0), QPointF(2940.0, 910.0), QPointF(2972.0, 1326.0)};
-
-
-
     for(int i = 0; i < 10; i++)
     {
         batteries[i] = new ItemBattery(player, i);
@@ -242,7 +236,6 @@ int main(int argc, char *argv[])
     game->addGui(grabbed);
     game->addGui(battery);
     game->addGui(hp);
-
 
 	// ------------------ TTY ------------------ //
     CONTROLLER = new controller();

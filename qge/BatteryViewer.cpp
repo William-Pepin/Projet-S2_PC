@@ -52,8 +52,6 @@ double BatteryViewer::getWidth()
 void BatteryViewer::draw_(int state)
 {
 
-    // draw background
-    qDebug() << "state = " << state;
     switch (state) {
         case 0 :
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_0-5.png"));
