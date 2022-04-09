@@ -37,10 +37,10 @@ void TTY(controller* ptr_ctrl, string COM, int BAUD) {
     arduino = new SerialPort(COM.c_str(), BAUD);
     
     if(!arduino->isConnected()) {
-        cout << "Impossible de se connecter au port "<< COM <<". Fermeture du thread!" <<endl;
-        while(1)
+        while(!arduino->isConnected())
         {
-            this_thread::sleep_for(20000000000000000ms);
+            this_thread::sleep_for(1000ms);
+            arduino = new SerialPort(COM.c_str(), BAUD);
         }
     }
     
