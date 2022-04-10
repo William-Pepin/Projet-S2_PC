@@ -222,6 +222,8 @@ void ECKeyboardMover4Directional::moveStep_()
 
     if(isEnd)
     {
+        scrollWindow_(new ScrollWindow(530,330))
+        this->setGuiPos(QPointF(360,200));
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/grab.png"));
         GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
         while(isEnd)
