@@ -4,7 +4,6 @@
 #include "QObject"
 #include "qge/Entity.h"
 #include "QTimer"
-#include "qge/Entity.h"
 #include "Global.h"
 
 class gestionnaireGrabber : public QObject
@@ -33,9 +32,6 @@ private :
     QTimer *timerCanBeGrab;
 
     QTimer *timerResetTrigger;
-
-
-
 };
 
 #endif // GESTIONNAIREGRABBER_H
