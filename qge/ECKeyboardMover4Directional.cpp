@@ -1,4 +1,5 @@
 #include "ECKeyboardMover4Directional.h"
+#include "ScrollWindow.h"
 
 #include "Map.h"
 #include "Game.h"
@@ -141,7 +142,14 @@ void ECKeyboardMover4Directional::moveStep_()
 
     CONTROLLER->last_button_trig_left = CONTROLLER->trig_left;
 
-    bool isEnd = false;
+    if(IS_END)
+    {
+        ScrollWindow* scrollWindow_ = new ScrollWindow(530,330);
+        scrollWindow_->setGuiPos(QPointF(360,200));
+        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/grab.png"));
+        GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+    }
+
 
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){
@@ -155,9 +163,9 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_U");
-            if(newY <= 2270 && newX <= 2090)
+            if(newY >= 2270 && newX >= 2090)
             {
-                isEnd = true;
+                IS_END = true;
             }
         }
         return;
@@ -174,9 +182,9 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_D");
-            if(newY <= 2270 && newX <= 2090)
+            if(newY >= 2270 && newX >= 2090)
             {
-                isEnd = true;
+                IS_END = true;
             }
         }
         return;
@@ -193,9 +201,9 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_L");
-            if(newX <= 2090 && newY <= 2270)
+            if(newX >= 2090 && newY >= 2270)
             {
-                isEnd = true;
+                IS_END = true;
             }
         }
         return;
@@ -212,31 +220,15 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_R");
-            if(newX <= 2090 && newY <= 2270)
+            if(newX >= 2090 && newY >= 2270)
             {
-                isEnd = true;
+                IS_END = true;
             }
         }
         return;
     }
 
-    if(isEnd)
-    {
-        scrollWindow_(new ScrollWindow(530,330))
-        this->setGuiPos(QPointF(360,200));
-        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/grab.png"));
-        GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
-        while(isEnd)
-        {
-            if(trigLeft)
-            {
-                isEnd = false;
-                GESTIONNAIRE_BATTERIE->getIntervalTimer()->start();
-            }
-            trigLeft = CONTROLLER->trig_left;
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    }
+
 
     if (hPressed && IS_GRABBED)
     {

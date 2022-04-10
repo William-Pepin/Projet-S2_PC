@@ -20,5 +20,6 @@ extern bool interact;
 extern bool IS_PAUSED;
 extern bool IS_GRABBED;
 extern bool ACC;
+extern bool IS_END;
 
 #endif // GLOBAL_H
