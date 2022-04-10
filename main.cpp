@@ -26,6 +26,7 @@
 #include "qge/HPViewer.h"
 #include "qge/ECRotater.h"
 #include "qge/GrabbedViewer.h"
+#include "qge/EndViewer.h"
 
 #include "lightsource.h"
 #include "gestionnairebattery.h"
@@ -39,6 +40,7 @@ qge::Entity* FLASH_LIGHT;
 qge::ECRotater* FLASH_LIGHT_ROTATER;
 
 bool IS_PAUSED;
+bool IS_END;
 bool IS_GRABBED;
 bool ACC;
 bool interact;

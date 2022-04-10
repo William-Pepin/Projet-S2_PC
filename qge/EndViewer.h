@@ -1,4 +1,7 @@
- #pragma once
+#ifndef ENDVIEWER_H
+#define ENDVIEWER_H
+
+#pragma once
 
 
 #include "Gui.h"
@@ -21,41 +24,44 @@ class ScrollWindow;
 /// InventoryViewer emits a signal.
 class EndViewer : public Gui
 {
-    Q_OBJECT
+   Q_OBJECT
 public:
-    EndViewer(ECKeyboardMover4Directional *keyboardMoverController);
+   EndViewer(ECKeyboardMover4Directional *keyboardMoverController);
 
-    QGraphicsItem* getGraphicsItem();
+   QGraphicsItem* getGraphicsItem();
 
-    void setBorder(double amount);
-    void setBackgroundColor(const QColor& color);
-    void setBackgroundPixmap(const QPixmap& pixmap);
+   void setBorder(double amount);
+   void setBackgroundColor(const QColor& color);
+   void setBackgroundPixmap(const QPixmap& pixmap);
 
-    double getHeight();
-    double getWidth();
+   double getHeight();
+   double getWidth();
 
 
-    int getHealthState();
-    int setHealthState();
+   int getHealthState();
+   int setHealthState();
 
 
 public slots :
-    void draw_();
+   void draw_();
 
 private:
-    double border_;
-    double height;
-    double width;
-    double paddingBWCells_;
-    int healthState;
+   double border_;
+   double height;
+   double width;
+   double paddingBWCells_;
+   int healthState;
 
-    // cell options
-    bool cellBackgroundIsColor_;
-    QColor cellBackgroundColor_;
-    QPixmap cellBackgroundPixmap_;
+   // cell options
+   bool cellBackgroundIsColor_;
+   QColor cellBackgroundColor_;
+   QPixmap cellBackgroundPixmap_;
 
-    std::unique_ptr<ScrollWindow> scrollWindow_;
+   std::unique_ptr<ScrollWindow> scrollWindow_;
 
 };
 
 }
+
+
+#endif // ENDVIEWER_H

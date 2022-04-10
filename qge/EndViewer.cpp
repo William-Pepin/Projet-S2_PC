@@ -1,12 +1,13 @@
 #include "EndViewer.h"
 #include "ScrollWindow.h"
+#include "Global.h"
 
 
 
 using namespace qge;
 
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
-GrabbedViewer::GrabbedViewer(ECKeyboardMover4Directional *keyboardMoverController):
+EndViewer::EndViewer(ECKeyboardMover4Directional *keyboardMoverController):
     border_(1),
     scrollWindow_(new ScrollWindow(530,330))
 {
@@ -21,7 +22,7 @@ GrabbedViewer::GrabbedViewer(ECKeyboardMover4Directional *keyboardMoverControlle
     connect(keyboardMoverController, &ECKeyboardMover4Directional::end , this, &EndViewer::draw_);
 }
 
-QGraphicsItem *GrabbedViewer::getGraphicsItem()
+QGraphicsItem *EndViewer::getGraphicsItem()
 {
     return scrollWindow_->getGraphicsItem();
 }
@@ -30,26 +31,26 @@ QGraphicsItem *GrabbedViewer::getGraphicsItem()
 /// Sets the background of the InventoryViewer to the specified QPixmap.
 /// @see InventoryViewer::setBackgroundColor(const QColor& color) for
 /// more info.
-void GrabbedViewer::setBackgroundPixmap(const QPixmap &pixmap)
+void EndViewer::setBackgroundPixmap(const QPixmap &pixmap)
 {
     scrollWindow_->setBackgroundPixmap(pixmap);
 }
 
 
 /// Returns the height of the InventoryViewer.
-double GrabbedViewer::getHeight()
+double EndViewer::getHeight()
 {
     return height;
 }
 
 /// Returns the width of the InventoryViewer.
-double GrabbedViewer::getWidth()
+double EndViewer::getWidth()
 {
     return width;
 }
 
 /// Draws the Inventory based on its current states.
-void GrabbedViewer::draw_()
+void EndViewer::draw_()
 {
 
     // draw background

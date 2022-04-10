@@ -144,7 +144,7 @@ void ECKeyboardMover4Directional::moveStep_()
 
     if(IS_END)
     {
-        emit end()
+        emit end();
         GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
     }
 

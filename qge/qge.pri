@@ -7,6 +7,7 @@ CONFIG += c++14 resources_big # we require a C++14 compatible compiler and are p
 # these are the sources we need
 SOURCES += \ # this is just so we can line up all our sources nicely
     $$PWD/BatteryViewer.cpp \
+    $$PWD/EndViewer.cpp \
     $$PWD/GrabbedViewer.cpp \
     $$PWD/HPViewer.cpp \
     $$PWD/MCRegionEmitter.cpp \
@@ -108,6 +109,7 @@ SOURCES += \ # this is just so we can line up all our sources nicely
     $$PWD/ECPathMover.cpp \
     $$PWD/ECSineMover.cpp \
     $$PWD/ECStraightMover.cpp \
+    $$PWD/EndViewer.cpp \
     $$PWD/FireballLauncher.cpp \
     $$PWD/AnimationAttack.cpp \
     $$PWD/ECChaser.cpp \
@@ -128,6 +130,7 @@ SOURCES += \ # this is just so we can line up all our sources nicely
 # these are the headers we use
 HEADERS  += \ # this is just so we can line up all our headers nicely
     $$PWD/BatteryViewer.h \
+    $$PWD/EndViewer.h \
     $$PWD/GrabbedViewer.h \
     $$PWD/HPViewer.h \
     $$PWD/MCRegionEmitter.h \
@@ -229,6 +232,7 @@ HEADERS  += \ # this is just so we can line up all our headers nicely
     $$PWD/ECPathMover.h \
     $$PWD/ECSineMover.h \
     $$PWD/ECStraightMover.h \
+    $$PWD/EndViewer.h \
     $$PWD/FireballLauncher.h \
     $$PWD/AnimationAttack.h \
     $$PWD/ECChaser.h \
