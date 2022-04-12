@@ -26,6 +26,7 @@
 #include "qge/HPViewer.h"
 #include "qge/ECRotater.h"
 #include "qge/GrabbedViewer.h"
+#include "qge/EndViewer.h"
 
 #include "lightsource.h"
 #include "gestionnairebattery.h"
@@ -39,6 +40,7 @@ qge::Entity* FLASH_LIGHT;
 qge::ECRotater* FLASH_LIGHT_ROTATER;
 
 bool IS_PAUSED;
+bool IS_END;
 bool IS_GRABBED;
 bool ACC;
 bool interact;
@@ -184,6 +186,7 @@ int main(int argc, char *argv[])
     FLASH_LIGHT_ROTATER->rotateTowards(90); // Utiliser cette fonction pour rotate la flashlight
 
     // player control
+    IS_END = false;
     qge::ECKeyboardMover4Directional *keyboardMoverController = new qge::ECKeyboardMover4Directional(player);
     qge::ECCameraFollower *cameraFollowerController = new qge::ECCameraFollower(player);
     qge::ECItemPickerUpper *itemPicker = new qge::ECItemPickerUpper(player);
@@ -233,9 +236,12 @@ int main(int argc, char *argv[])
     qge::BatteryViewer *battery = new qge::BatteryViewer(GESTIONNAIRE_BATTERIE);
     qge::HPViewer *hp = new qge::HPViewer(player);
     qge::GrabbedViewer *grabbed = new qge::GrabbedViewer(gesGrab);
+    qge::EndViewer *end = new qge::EndViewer(keyboardMoverController);
+
     game->addGui(grabbed);
     game->addGui(battery);
     game->addGui(hp);
+    game->addGui(end);
 
 	// ------------------ TTY ------------------ //
     CONTROLLER = new controller();

@@ -1,3 +1,6 @@
+#ifndef ECKEYBOARDMOVER4DIRECTIONAL_H
+#define ECKEYBOARDMOVER4DIRECTIONAL_H
+
 #pragma once
 
 #include "Vendor.h"
@@ -27,6 +30,10 @@ public:
 
     void setStepSize(double stepSize);
     double stepSize();
+
+signals :
+    void end();
+
 public slots:
     void moveStep_();
 private:
@@ -38,3 +45,5 @@ private:
 };
 
 }
+
+#endif // ECKEYBOARDMOVER4DIRECTIONAL_H

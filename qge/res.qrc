@@ -34,5 +34,7 @@
         <file>graphics/hearts/heart_3-3.png</file>
         <file>graphics/Grabbed/notgrab.png</file>
         <file>graphics/Grabbed/grab.png</file>
+		<file>graphics/Screen/EndScreen.png</file>
+		<file>graphics/Screen/DeathScreen.png</file>
     </qresource>
 </RCC>

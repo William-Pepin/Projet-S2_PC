@@ -1,27 +1,28 @@
-#include "grabbedviewer.h"
+#include "EndViewer.h"
 #include "ScrollWindow.h"
+#include "Global.h"
 
 
 
 using namespace qge;
 
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
-GrabbedViewer::GrabbedViewer(gestionnaireGrabber *grabber):
+EndViewer::EndViewer(ECKeyboardMover4Directional *keyboardMoverController):
     border_(1),
-    scrollWindow_(new ScrollWindow(530,330))
+    scrollWindow_(new ScrollWindow(1280,720))
 {
     // defaults
     height = 50;
     width = 80;
 
 
-    this->setGuiPos(QPointF(360,200));
+    this->setGuiPos(QPointF(0,0));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/notgrab.png"));
     scrollWindow_->showBorder(false);
-    connect(grabber, &gestionnaireGrabber::Grab , this, &GrabbedViewer::draw_);
+    connect(keyboardMoverController, &ECKeyboardMover4Directional::end , this, &EndViewer::draw_);
 }
 
-QGraphicsItem *GrabbedViewer::getGraphicsItem()
+QGraphicsItem *EndViewer::getGraphicsItem()
 {
     return scrollWindow_->getGraphicsItem();
 }
@@ -30,37 +31,37 @@ QGraphicsItem *GrabbedViewer::getGraphicsItem()
 /// Sets the background of the InventoryViewer to the specified QPixmap.
 /// @see InventoryViewer::setBackgroundColor(const QColor& color) for
 /// more info.
-void GrabbedViewer::setBackgroundPixmap(const QPixmap &pixmap)
+void EndViewer::setBackgroundPixmap(const QPixmap &pixmap)
 {
     scrollWindow_->setBackgroundPixmap(pixmap);
 }
 
 
 /// Returns the height of the InventoryViewer.
-double GrabbedViewer::getHeight()
+double EndViewer::getHeight()
 {
     return height;
 }
 
 /// Returns the width of the InventoryViewer.
-double GrabbedViewer::getWidth()
+double EndViewer::getWidth()
 {
     return width;
 }
 
 /// Draws the Inventory based on its current states.
-void GrabbedViewer::draw_()
+void EndViewer::draw_()
 {
 
     // draw background
 
-    switch (IS_GRABBED) {
+    switch (IS_END) {
         case 0 :
         scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/notgrab.png"));
         break;
 
         case 1 :
-        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/grab.png"));
+        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Screen/EndScreen.png"));
         break;
 
 

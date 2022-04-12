@@ -1,4 +1,5 @@
 #include "ECKeyboardMover4Directional.h"
+#include "ScrollWindow.h"
 
 #include "Map.h"
 #include "Game.h"
@@ -89,7 +90,7 @@ void ECKeyboardMover4Directional::moveStep_()
     bool aPressed = entitysGame->keysPressed().count(Qt::Key_A) || CONTROLLER->dpad_left;
     bool dPressed = entitysGame->keysPressed().count(Qt::Key_D) || CONTROLLER->dpad_right;
     bool hPressed = entitysGame->keysPressed().count(Qt::Key_H);
-    bool ePressed = entitysGame->keysPressed().count(Qt::Key_E);
+    bool ePressed = entitysGame->keysPressed().count(Qt::Key_E); 
 
     ACC = CONTROLLER->acc;
 
@@ -141,6 +142,13 @@ void ECKeyboardMover4Directional::moveStep_()
 
     CONTROLLER->last_button_trig_left = CONTROLLER->trig_left;
 
+    if(IS_END)
+    {
+        emit end();
+        GESTIONNAIRE_BATTERIE->getIntervalTimer()->stop();
+    }
+
+
     // move up if W is pressed
     if (wPressed && !IS_GRABBED){
         // find newPt to move to
@@ -153,6 +161,10 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_U");
+            if(newY >= 2270 && newX >= 2090)
+            {
+                IS_END = true;
+            }
         }
         return;
     }
@@ -168,6 +180,10 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_D");
+            if(newY >= 2270 && newX >= 2090)
+            {
+                IS_END = true;
+            }
         }
         return;
     }
@@ -183,6 +199,10 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_L");
+            if(newX >= 2090 && newY >= 2270)
+            {
+                IS_END = true;
+            }
         }
         return;
     }
@@ -198,9 +218,15 @@ void ECKeyboardMover4Directional::moveStep_()
             entity->setPos(newPt);
             FLASH_LIGHT->setPos(newPt);
             playAnimationIfItExists_("walk_R");
+            if(newX >= 2090 && newY >= 2270)
+            {
+                IS_END = true;
+            }
         }
         return;
     }
+
+
 
     if (hPressed && IS_GRABBED)
     {
