@@ -12,7 +12,7 @@ HPViewer::HPViewer(Entity *player):
     height = 50;
     width = 80;
 
-
+    
     this->setGuiPos(QPointF(1040,10));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/hearts/heart_3-3.png"));
     connect(player, &Entity::healthChanged , this, &HPViewer::draw_);
@@ -53,7 +53,11 @@ void HPViewer::draw_(Entity *player)
 
     switch (healthState) {
         case 0 :
-        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/hearts/heart_0-3.png"));
+        scrollWindow_->removeAll();
+        scrollWindow_->setHeight(720);
+        scrollWindow_->setWidth(1280);
+        this->setGuiPos(QPointF(0, 0));
+        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Screen/DeathScreen.png"));
         break;
 
         case 1 :

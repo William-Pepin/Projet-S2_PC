@@ -239,9 +239,9 @@ int main(int argc, char *argv[])
     qge::EndViewer *end = new qge::EndViewer(keyboardMoverController);
 
     game->addGui(grabbed);
-    game->addGui(end);
     game->addGui(battery);
     game->addGui(hp);
+    game->addGui(end);
 
 	// ------------------ TTY ------------------ //
     CONTROLLER = new controller();

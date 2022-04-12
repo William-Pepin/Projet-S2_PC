@@ -9,14 +9,14 @@ using namespace qge;
 /// Creates a default InventoryViewer which visualizes the specified Inventory.
 EndViewer::EndViewer(ECKeyboardMover4Directional *keyboardMoverController):
     border_(1),
-    scrollWindow_(new ScrollWindow(530,330))
+    scrollWindow_(new ScrollWindow(1280,720))
 {
     // defaults
     height = 50;
     width = 80;
 
 
-    this->setGuiPos(QPointF(360,200));
+    this->setGuiPos(QPointF(0,0));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/notgrab.png"));
     scrollWindow_->showBorder(false);
     connect(keyboardMoverController, &ECKeyboardMover4Directional::end , this, &EndViewer::draw_);
@@ -61,7 +61,7 @@ void EndViewer::draw_()
         break;
 
         case 1 :
-        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Grabbed/grab.png"));
+        scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/Screen/EndScreen.png"));
         break;
 
 

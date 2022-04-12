@@ -15,7 +15,7 @@ BatteryViewer::BatteryViewer(GestionnaireBattery *gestionnaire):
     width = 80;
 
 
-    this->setGuiPos(QPointF(-10,610));
+    this->setGuiPos(QPointF(0,610));
     scrollWindow_->setBackgroundPixmap(QPixmap(":/resources/graphics/battery/battery_5-5.png"));
 
     connect(gestionnaire, &GestionnaireBattery::ChangerUI, this, &BatteryViewer::draw_);
