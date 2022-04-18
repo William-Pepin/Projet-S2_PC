@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QMediaPlayer>
 #include "QPointF"
 #include "QPixmap"
 #include "QImage"
@@ -246,6 +247,12 @@ int main(int argc, char *argv[])
 	// ------------------ TTY ------------------ //
     CONTROLLER = new controller();
     std::thread thread(TTY, CONTROLLER, COM, BAUD);
+
+
+    QMediaPlayer * music = new QMediaPlayer();
+    QUrl url("qrc:/resources/sounds/track.mp3");
+    music ->setMedia(url);
+    music ->play();
 
     game->launch();
     player->moveBy(10, 10);
