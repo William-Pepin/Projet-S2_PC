@@ -119,7 +119,7 @@ void ECKeyboardMover4Directional::moveStep_()
 
     CONTROLLER->bargraph = GESTIONNAIRE_BATTERIE->getBatteryState() * 2;
 
-    bool trigLeft = CONTROLLER->trig_left;
+    bool trigLeft = false;
     if(trigLeft)
     {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
