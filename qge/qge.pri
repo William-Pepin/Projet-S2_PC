@@ -109,7 +109,6 @@ SOURCES += \ # this is just so we can line up all our sources nicely
     $$PWD/ECPathMover.cpp \
     $$PWD/ECSineMover.cpp \
     $$PWD/ECStraightMover.cpp \
-    $$PWD/EndViewer.cpp \
     $$PWD/FireballLauncher.cpp \
     $$PWD/AnimationAttack.cpp \
     $$PWD/ECChaser.cpp \
@@ -232,7 +231,6 @@ HEADERS  += \ # this is just so we can line up all our headers nicely
     $$PWD/ECPathMover.h \
     $$PWD/ECSineMover.h \
     $$PWD/ECStraightMover.h \
-    $$PWD/EndViewer.h \
     $$PWD/FireballLauncher.h \
     $$PWD/AnimationAttack.h \
     $$PWD/ECChaser.h \
